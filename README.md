@@ -1,230 +1,73 @@
 # CRIVEA Website
 
-Website company profile untuk **CRIVEA**, perusahaan yang bergerak di bidang **Creative** dan **Technology**.
+React + TypeScript foundation for CRIVEA company website.
 
-Website ini dibuat untuk memperkenalkan CRIVEA, menampilkan talent yang tergabung di dalamnya, serta menampilkan project yang telah dikerjakan.
+## Tech stack
 
-## Preview
-
-> Screenshot / preview website akan ditambahkan setelah versi awal selesai.
-
----
-
-## About CRIVEA
-
-CRIVEA memiliki dua divisi utama:
-
-- **Creative**
-- **Tech**
-
-Salah satu fokus utama website ini adalah memperkenalkan orang-orang di balik CRIVEA. Setiap talent memiliki halaman profile yang berisi informasi mengenai role, keahlian, dan project yang pernah dikerjakan.
-
----
-
-## Pages
-
-### Home
-Halaman utama yang berisi:
-
-- Hero
-- About CRIVEA
-- Division
-- Featured Talent
-- Featured Work
-- Testimonials
-- Contact
-
-### Talent
-Menampilkan seluruh talent CRIVEA berdasarkan divisi:
-
-- All
-- Creative
-- Tech
-
-### Talent Detail
-Setiap talent memiliki halaman profile sendiri yang menampilkan:
-
-- Foto
-- Nama
-- Role
-- Division
-- Bio
-- Skills
-- Selected Projects
-- Social Media
-
-### Work
-Menampilkan project yang telah dikerjakan oleh CRIVEA.
-
-### Contact
-Berisi informasi dan social media CRIVEA.
-
----
-
-## Admin
-
-Admin panel disiapkan untuk mengelola data website seperti:
-
-- Talent
-- Projects
-- Testimonials
-
-Untuk tahap awal, admin masih berupa **frontend prototype** menggunakan data lokal.
-
-Backend dan database akan ditambahkan pada tahap pengembangan berikutnya.
-
----
-
-## Tech Stack
-
-- React
+- React 19
+- TypeScript
 - Vite
-- JavaScript
 - CSS
-- React Router
+- Git / GitHub
 
-Tools:
-
-- Git
-- GitHub
-- VS Code
-
----
-
-## Project Structure
+## Project structure
 
 ```text
 src/
-├── assets/
 ├── components/
-├── data/
-├── pages/
-├── App.jsx
-├── main.jsx
-└── index.css
+│   ├── Navbar.tsx
+│   ├── PlaceholderCard.tsx
+│   └── SectionLabel.tsx
+├── sections/
+│   ├── About.tsx
+│   ├── Contact.tsx
+│   ├── Hero.tsx
+│   ├── Talent.tsx
+│   └── Work.tsx
+├── App.tsx
+├── main.tsx
+├── style.css
+└── vite-env.d.ts
 ```
 
-Data website untuk sementara disimpan di:
+Current UI is intentionally a neutral canvas. Team can add final design, content, data, animation, and API integration.
 
-```text
-src/data/
-├── talents.js
-├── projects.js
-└── testimonials.js
-```
-
-Struktur ini dibuat agar nantinya data dapat dengan mudah dihubungkan ke API ketika backend sudah dibuat.
-
----
-
-## Design
-
-Website menggunakan konsep **modern creative agency** dengan fokus pada:
-
-- Dark blue & blue
-- Typography yang besar
-- Visual yang kuat
-- Clean layout
-- Responsive design
-- Smooth animation
-- Subtle parallax
-- Interactive hover effect
-
-Desain dibuat agar terasa seperti website creative/digital agency dan bukan template company profile biasa.
-
----
-
-## Installation
-
-Clone repository:
-
-```bash
-git clone <repository-url>
-```
-
-Masuk ke folder project:
-
-```bash
-cd CRIVEA
-```
-
-Install dependencies:
+## Run locally
 
 ```bash
 npm install
-```
-
-Jalankan development server:
-
-```bash
 npm run dev
 ```
 
-Kemudian buka alamat yang diberikan oleh Vite pada browser.
-
----
-
-## Development
-
-Project ini dikerjakan oleh tim yang terdiri dari 4 orang.
-
-Branch utama:
-
-```text
-main
-develop
-```
-
-Untuk membuat feature baru:
+Build production files:
 
 ```bash
-git checkout develop
-git pull
-git checkout -b feature/nama-feature
+npm run build
 ```
 
-Setelah selesai, lakukan commit dan push:
+Preview production build:
+
+```bash
+npm run preview
+```
+
+## Git workflow
+
+```bash
+git checkout main
+git pull origin main
+git checkout -b feature/feature-name
+```
+
+Commit changes:
 
 ```bash
 git add .
-git commit -m "feat: add talent section"
-git push origin feature/nama-feature
+git commit -m "feat: describe change"
 ```
 
-Feature kemudian akan melalui proses review sebelum digabungkan ke `develop`.
+Push only after review:
 
----
-
-## Roadmap
-
-### Frontend
-- [x] Project setup
-- [ ] Home
-- [ ] Talent
-- [ ] Talent Detail
-- [ ] Work
-- [ ] Contact
-- [ ] Admin UI
-- [ ] Responsive optimization
-- [ ] Animation & interaction
-
-### Backend
-- [ ] API
-- [ ] Database
-- [ ] Authentication
-- [ ] Admin CRUD
-- [ ] Image upload
-
----
-
-## Status
-
-**Currently in development.**
-
-Frontend menjadi fokus utama pada tahap awal. Backend dan database akan dikembangkan setelah struktur frontend selesai.
-
----
-
-## License
-
-This project is developed for **CRIVEA**.
+```bash
+git push -u origin feature/feature-name
+```
