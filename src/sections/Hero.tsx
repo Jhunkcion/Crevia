@@ -1,5 +1,3 @@
-import React from "react";
-
 type HeroProps = {
   onNavigate?: (page: string) => void;
 };

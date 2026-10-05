@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 type TalentItem = {
   id: number;
@@ -12,7 +12,6 @@ type TalentItem = {
 
 type TalentProps = {
   division?: "studio" | "tech";
-  onNavigate?: (page: string) => void;
 };
 
 const studioTalents: TalentItem[] = [
@@ -143,7 +142,6 @@ const techTalents: TalentItem[] = [
 
 export default function Talent({
   division = "studio",
-  onNavigate,
 }: TalentProps) {
   const [selectedTalent, setSelectedTalent] = useState<TalentItem | null>(
     null
