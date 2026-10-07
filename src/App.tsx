@@ -162,11 +162,12 @@ export default function App() {
                   <div className="talent-overlay__panel relative h-[90vh] w-[90vw] max-w-[1400px] overflow-hidden rounded-lg bg-white shadow-2xl">
             <button
               type="button"
-              className="absolute top-4 left-4 z-10 px-4 py-2 text-sm font-semibold hover:opacity-70"
-              onClick={() => setSelectedDivision(null)}
-            >
-              ← BACK
-            </button>
+              className="absolute top-4 left-4 z-10 p-2 text-2xl leading-none text-black hover:opacity-70"
+                            aria-label="Close team profile"
+                            onClick={() => setSelectedDivision(null)}
+                          >
+                            ←
+                          </button>
             <Talent division={selectedDivision} />
           </div>
         </div>
