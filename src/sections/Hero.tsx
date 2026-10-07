@@ -2,9 +2,9 @@ type HeroProps = { onNavigate?: (page: string) => void };
 
 export default function Hero({ onNavigate }: HeroProps) {
   return (
-    <section className="min-h-screen px-6 pb-10 pt-16 text-blue md:px-12" style={{ backgroundColor: '#DFEFFB' }}>
-      <div className="relative mx-auto flex min-h-[calc(100vh-4rem)] max-w-6xl flex-col items-center justify-center text-center">
-        <div className="relative z-10 flex max-w-3xl flex-col items-center mt 0">
+    <section className="h-screen overflow-hidden px-6 text-blue md:px-12" style={{ backgroundColor: '#DFEFFB' }}>
+      <div className="relative mx-auto flex h-full max-w-6xl flex-col items-center justify-center text-center">
+        <div className="relative z-10 flex max-w-3xl flex-col items-center">
           <h1 className="mb-6 text-6xl font-bold leading-tight tracking-tight md:text-7xl lg:text-8xl">
             CREVIA
           </h1>

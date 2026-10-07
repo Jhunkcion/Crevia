@@ -201,91 +201,72 @@ export default function Talent({
    */
   if (selectedTalent) {
     return (
-      <section className="talent-detail-section" role="dialog" aria-modal="true" aria-labelledby="talent-detail-title">
-        <div className="talent-detail-wrapper">
+      <div className="talent-profile-overlay fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-md">
+              <div className="talent-profile-overlay__panel relative h-[90vh] w-[90vw] max-w-[1400px] overflow-hidden rounded-lg bg-white shadow-2xl">
           <button
             ref={closeButtonRef}
             type="button"
-            className="talent-back-button"
+            className="absolute top-4 left-4 z-10 px-4 py-2 text-sm font-semibold hover:opacity-70"
             onClick={() => setSelectedTalent(null)}
           >
             ← BACK
           </button>
 
-          <div className="talent-detail-card">
-            <div className="talent-detail-photo">
-              <img
-                src={selectedTalent.image}
-                alt={selectedTalent.name}
+          <div className="flex h-full flex-col p-8 md:p-12">
+            <div className="flex flex-1 gap-8">
+              {/* Photo */}
+              <div className="w-1/3 overflow-hidden rounded-lg bg-gray-200">
+                <img
+                  src={selectedTalent.image}
+                  alt={selectedTalent.name}
+                  className="h-full w-full object-cover"
                   width="600"
                   height="750"
-                loading="lazy"
-                decoding="async"
-              />
-            </div>
-
-            <div className="talent-detail-content">
-              <div className="talent-detail-heading">
-                <div>
-                  <span className="talent-detail-hi">Hi, I'm</span>
-
-                  <h1 id="talent-detail-title">{selectedTalent.name}</h1>
-                </div>
-
-                <div className="talent-detail-arrows">
-                  <button
-                    type="button"
-                    onClick={() => setSelectedTalent(null)}
-                    aria-label="Back"
-                  >
-                    ↩
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => setSelectedTalent(null)}
-                    aria-label="Close"
-                  >
-                    ↪
-                  </button>
-                </div>
+                  loading="lazy"
+                  decoding="async"
+                />
               </div>
 
-              <div className="talent-detail-line" />
+              {/* Content */}
+              <div className="flex w-2/3 flex-col">
+                <div className="mb-4">
+                  <span className="text-sm text-gray-500">Hi, I'm</span>
+                  <h1 className="font-serif text-4xl font-bold">{selectedTalent.name}</h1>
+                  <div className="mt-2 h-1 w-20 bg-blue-600" />
+                </div>
 
-              <p className="talent-detail-description">
-                {selectedTalent.description}
-              </p>
+                <p className="mb-4 text-gray-700">
+                  {selectedTalent.description}
+                </p>
 
-              <p className="talent-detail-specialization">
-                {selectedTalent.specialization}
-              </p>
+                <p className="mb-6 text-sm text-gray-600">
+                  {selectedTalent.specialization}
+                </p>
 
-              <div className="talent-detail-portfolio">
-                {selectedTalent.portfolio.map((image, index) => (
-                  <div
-                    className="talent-portfolio-image"
-                    key={`${selectedTalent.id}-${index}`}
-                  >
-                    <img
-                      src={image}
-                      alt={`${selectedTalent.name} portfolio ${index + 1}`}
-                      width="500"
-                      height="500"
-                      loading="lazy"
-                      decoding="async"
-                    />
-                  </div>
-                ))}
-              </div>
-
-              <div className="talent-detail-side-buttons">
-                <button type="button" aria-label="Close talent details" onClick={() => setSelectedTalent(null)}>↗</button>
+                {/* Portfolio */}
+                <div className="grid flex-1 grid-cols-2 gap-4">
+                  {selectedTalent.portfolio.map((image, index) => (
+                    <div
+                      className="overflow-hidden rounded-lg bg-gray-200"
+                      key={`${selectedTalent.id}-${index}`}
+                    >
+                      <img
+                        src={image}
+                        alt={`${selectedTalent.name} portfolio ${index + 1}`}
+                        className="h-full w-full object-cover"
+                        width="500"
+                        height="500"
+                        loading="lazy"
+                        decoding="async"
+                      />
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </section>
+      </div>
     );
   }
 
@@ -293,101 +274,57 @@ export default function Talent({
    * TEAM / TALENT LIST
    */
   return (
-    <section className="talent-team-section">
-      <div className="talent-team-container">
-
-        <div className="talent-team-header">
+    <section className="flex h-full flex-col bg-white p-8 md:p-12">
+      <div className="mx-auto flex h-full w-full max-w-[1400px] flex-col">
+        
+        {/* Header dengan Meet The Team dan STUDIO TALENTS */}
+        <div className="mb-8 flex items-start justify-between">
           <div>
-            <h1>
+            <h1 className="font-serif text-4xl leading-tight md:text-5xl lg:text-6xl">
               Meet
               <br />
               The Team
             </h1>
           </div>
-
-          <span>{divisionTitle}</span>
+          
+          <div className="text-right">
+            <span className="text-sm font-semibold tracking-wider text-gray-400">
+              {divisionTitle}
+            </span>
+          </div>
         </div>
 
-        <div className="talent-team-list">
+        {/* Grid 4 cards horizontal - flex-1 untuk isi ruang */}
+        <div className="grid flex-1 grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {talents.map((talent) => (
             <button
               type="button"
-              className="talent-team-card"
+              className="group relative flex h-full flex-col overflow-hidden bg-gray-50 transition-all hover:shadow-xl"
               key={talent.id}
               onClick={(event) => openTalent(talent, event.currentTarget)}
             >
-              <div className="talent-team-photo">
+              {/* Photo container dengan aspect ratio */}
+              <div className="flex-1 w-full overflow-hidden bg-gray-200">
                 <img
                   src={talent.image}
                   alt={talent.name}
+                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                   width="600"
-                  height="750"
+                  height="800"
                   loading="lazy"
                   decoding="async"
                 />
               </div>
 
-              <div className="talent-team-name">
-                {talent.name}
+              {/* Name dengan blue line */}
+              <div className="p-3">
+                <div className="mb-2 text-left text-sm font-semibold text-blue-600">
+                  {talent.name}
+                </div>
+                <div className="h-1 w-full bg-blue-600" />
               </div>
-
-              <div className="talent-team-blue-line" />
             </button>
           ))}
-        </div>
-
-        <div className="talent-highlight-title">
-          {division === "tech"
-            ? "Tech Member highlight"
-            : "Studio Member highlight"}
-        </div>
-
-        <div className="talent-highlight-card">
-          <div className="talent-highlight-photo">
-            <img
-              src={talents[0].image}
-              alt={talents[0].name}
-              width="600"
-              height="600"
-              loading="lazy"
-              decoding="async"
-            />
-          </div>
-
-          <div className="talent-highlight-content">
-            <div className="talent-highlight-top">
-              <div>
-                <span>Hi, I'm</span>
-                <h2>{talents[0].name}</h2>
-              </div>
-
-              <div className="talent-highlight-arrows">
-                <button type="button" aria-label="Open talent details" onClick={(event) => openTalent(talents[0], event.currentTarget)}>↗</button>
-              </div>
-            </div>
-
-            <p>{talents[0].description}</p>
-
-            <small>{talents[0].specialization}</small>
-
-            <div className="talent-highlight-portfolio">
-              {talents[0].portfolio.map((image, index) => (
-                <img
-                  key={index}
-                  src={image}
-                  alt={`${talents[0].name} portfolio ${index + 1}`}
-                  width="500"
-                  height="500"
-                  loading="lazy"
-                  decoding="async"
-                />
-              ))}
-            </div>
-          </div>
-
-          <div className="talent-highlight-side">
-            <button type="button" aria-label="Open talent details" onClick={(event) => openTalent(talents[0], event.currentTarget)}>↗</button>
-          </div>
         </div>
 
       </div>

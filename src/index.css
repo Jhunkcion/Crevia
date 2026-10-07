@@ -86,6 +86,26 @@
   100% { opacity: 1; clip-path: inset(0 0 100%); }
 }
 
+.talent-overlay,
+.talent-profile-overlay {
+  animation: talent-overlay-in .28s ease-out both;
+}
+
+.talent-overlay__panel,
+.talent-profile-overlay__panel {
+  animation: talent-panel-in .38s cubic-bezier(.22, 1, .36, 1) both;
+}
+
+@keyframes talent-overlay-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes talent-panel-in {
+  from { opacity: 0; transform: translateY(1.25rem) scale(.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
 .talent-team-section,
 .talent-detail-section {
   position: relative;

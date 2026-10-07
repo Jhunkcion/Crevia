@@ -151,12 +151,26 @@ export default function App() {
 
       <main ref={pageViewRef} className="page-view">
         {activePage === "home" && <Hero onNavigate={handleNavigate} />}
-        {activePage === "divisions" && (
-          selectedDivision ? <Talent division={selectedDivision} /> : <Divisions onSelect={setSelectedDivision} />
-        )}
+        {activePage === "divisions" && <Divisions onSelect={setSelectedDivision} />}
         {activePage === "work" && <Work />}
         {activePage === "contact" && <Contact />}
       </main>
+
+      {/* Talent overlay with backdrop blur */}
+      {activePage === "divisions" && selectedDivision && (
+        <div className="talent-overlay fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-md">
+                  <div className="talent-overlay__panel relative h-[90vh] w-[90vw] max-w-[1400px] overflow-hidden rounded-lg bg-white shadow-2xl">
+            <button
+              type="button"
+              className="absolute top-4 left-4 z-10 px-4 py-2 text-sm font-semibold hover:opacity-70"
+              onClick={() => setSelectedDivision(null)}
+            >
+              ← BACK
+            </button>
+            <Talent division={selectedDivision} />
+          </div>
+        </div>
+      )}
 
     </div>
   );
