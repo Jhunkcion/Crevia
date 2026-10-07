@@ -1,6 +1,6 @@
-# CRIVEA Website
+# CREVIA Website
 
-React + TypeScript foundation for CRIVEA company website.
+React + TypeScript foundation for CREVIA company website.
 
 ## Tech stack
 

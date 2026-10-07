@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import Navbar from "./components/Navbar";
 
@@ -6,283 +6,157 @@ import Hero from "./sections/Hero";
 import Work from "./sections/Work";
 import Contact from "./sections/Contact";
 import Talent from "./sections/Talent";
+import Divisions from "./sections/Divisions";
+
+type Page = "home" | "divisions" | "work" | "contact";
+
+function PageIndicator({ page }: { page: Page }) {
+  return (
+    <aside className={`page-indicator page-indicator--${page}`} aria-label={`Current page: ${page}`}>
+      <span className="page-indicator__line" aria-hidden="true" />
+      <span className="page-indicator__slashes" aria-hidden="true">
+        <i />
+        <i />
+        <i />
+        <i />
+      </span>
+      <span className="page-indicator__line page-indicator__line--short" aria-hidden="true" />
+      <span className="page-indicator__dots" aria-hidden="true">·<br />·<br />·</span>
+    </aside>
+  );
+}
+
+const PAGES: readonly Page[] = [
+  "home",
+  "divisions",
+  "work",
+  "contact",
+];
+
+const DEFAULT_PAGE: Page = "home";
+const WHEEL_THRESHOLD = 70;
+const WHEEL_COOLDOWN = 700;
+
+function pageFromHash(): Page {
+  const value = window.location.hash.slice(1);
+  if (PAGES.includes(value as Page)) {
+    return value as Page;
+  }
+
+  if (window.location.hash) {
+    window.history.replaceState(null, "", `#${DEFAULT_PAGE}`);
+  }
+
+  return DEFAULT_PAGE;
+}
 
 export default function App() {
-  const [activePage, setActivePage] = useState("home");
+  const [activePage, setActivePage] = useState<Page>(pageFromHash);
+  const [selectedDivision, setSelectedDivision] = useState<"studio" | "tech" | null>(null);
 
-  const isScrolling = useRef(false);
-
-  const activePageRef = useRef("home");
-
-  const pages = [
-    "home",
-    "divisions",
-    "work",
-    "contact",
-  ];
+  const activePageRef = useRef<Page>(pageFromHash());
+  const wheelLockRef = useRef(false);
+  const pageViewRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     activePageRef.current = activePage;
   }, [activePage]);
 
-  /*
-  ==========================================================
-  SCROLL / WHEEL NAVIGATION
-  ==========================================================
-
-  Scroll DOWN:
-  HOME
-    ↓
-  DIVISIONS
-    ↓
-  PROJECT
-    ↓
-  CONTACT
-
-  Scroll UP:
-  CONTACT
-    ↑
-  PROJECT
-    ↑
-  DIVISIONS
-    ↑
-  HOME
-  */
-
-  useEffect(() => {
-    /*
-    ==========================================================
-    SCROLL ACCUMULATOR
-
-    User harus scroll beberapa kali / sedikit lebih jauh
-    terlebih dahulu sebelum pindah ke menu berikutnya.
-
-    Jadi satu scroll kecil tidak langsung mengganti halaman.
-    ==========================================================
-    */
-
-    let scrollAmount = 0;
-
-    const SCROLL_THRESHOLD = 420;
-
-    const handleWheel = (event: WheelEvent) => {
-      /*
-      Jangan menerima scroll baru ketika transition
-      sebelumnya masih berjalan.
-      */
-      if (isScrolling.current) {
-        return;
-      }
-
-      /*
-      Abaikan gerakan wheel yang sangat kecil.
-      */
-      if (Math.abs(event.deltaY) < 5) {
-        return;
-      }
-
-      /*
-      ========================================================
-      AKUMULASI SCROLL
-      ========================================================
-      */
-
-      scrollAmount += event.deltaY;
-
-      /*
-      Belum cukup scroll.
-      Biarkan user tetap melihat isi section.
-      */
-      if (Math.abs(scrollAmount) < SCROLL_THRESHOLD) {
-        return;
-      }
-
-      /*
-      Tentukan arah berdasarkan akumulasi scroll.
-      */
-      const direction =
-        scrollAmount > 0 ? 1 : -1;
-
-      /*
-      Reset setelah threshold tercapai.
-      */
-      scrollAmount = 0;
-
-      const currentPage = activePageRef.current;
-
-      const currentIndex = pages.indexOf(
-        currentPage
-      );
-
-      let nextIndex = currentIndex;
-
-      /*
-      ========================================================
-      SCROLL DOWN
-      ========================================================
-      */
-
-      if (direction > 0) {
-        nextIndex = Math.min(
-          currentIndex + 1,
-          pages.length - 1
-        );
-      }
-
-      /*
-      ========================================================
-      SCROLL UP
-      ========================================================
-      */
-
-      if (direction < 0) {
-        nextIndex = Math.max(
-          currentIndex - 1,
-          0
-        );
-      }
-
-      /*
-      ========================================================
-      PINDAH MENU
-      ========================================================
-      */
-
-      if (nextIndex === currentIndex) {
-        return;
-      }
-
-      isScrolling.current = true;
-
-      const nextPage = pages[nextIndex];
-
-      activePageRef.current = nextPage;
-
-      setActivePage(nextPage);
-
-      /*
-      ========================================================
-      TRANSITION LOCK
-      ========================================================
-
-      Setelah pindah, user diberi waktu untuk membaca
-      section baru sebelum scroll berikutnya bisa
-      memindahkan section lagi.
-      */
-
-      window.setTimeout(() => {
-        isScrolling.current = false;
-      }, 2200);
-    };
-
-    /*
-    Jika user berhenti scroll cukup lama,
-    akumulasi scroll sebelumnya dibuang.
-    */
-
-    let resetTimer: number | undefined;
-
-    const handleWheelWithReset = (event: WheelEvent) => {
-      handleWheel(event);
-
-      if (resetTimer) {
-        window.clearTimeout(resetTimer);
-      }
-
-      resetTimer = window.setTimeout(() => {
-        scrollAmount = 0;
-      }, 700);
-    };
-
-    window.addEventListener(
-      "wheel",
-      handleWheelWithReset,
-      {
-        passive: true,
-      }
-    );
-
-    return () => {
-      window.removeEventListener(
-        "wheel",
-        handleWheelWithReset
-      );
-
-      if (resetTimer) {
-        window.clearTimeout(resetTimer);
-      }
-    };
-  }, []);
-
-  /*
-  ==========================================================
-  MANUAL NAVIGATION DARI NAVBAR
-  ==========================================================
-  */
-
-  const handleNavigate = (page: string) => {
-    if (!pages.includes(page)) {
-      return;
-    }
-
-    if (isScrolling.current) {
-      return;
-    }
-
+  const navigateTo = useCallback((page: Page) => {
     if (page === activePageRef.current) {
       return;
     }
 
     activePageRef.current = page;
-
     setActivePage(page);
+    if (page !== "divisions") setSelectedDivision(null);
+    window.history.pushState(null, "", `#${page}`);
+    pageViewRef.current?.scrollTo({ top: 0, behavior: "auto" });
+
+  }, []);
+
+  useEffect(() => {
+    const handlePopState = () => {
+      const page = pageFromHash();
+      activePageRef.current = page;
+      setActivePage(page);
+      setSelectedDivision(null);
+      pageViewRef.current?.scrollTo({ top: 0, behavior: "auto" });
+    };
+    window.addEventListener("popstate", handlePopState);
+    window.addEventListener("hashchange", handlePopState);
+
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+      window.removeEventListener("hashchange", handlePopState);
+    };
+  }, [navigateTo]);
+
+  useEffect(() => {
+    let wheelDelta = 0;
+    let resetTimer: number | undefined;
+
+    const handleWheel = (event: WheelEvent) => {
+      const target = event.target;
+      if (target instanceof Element && target.closest("[role=dialog]")) return;
+      if (wheelLockRef.current || Math.abs(event.deltaY) < 2) return;
+
+      wheelDelta += event.deltaY;
+      if (resetTimer !== undefined) window.clearTimeout(resetTimer);
+      resetTimer = window.setTimeout(() => {
+        wheelDelta = 0;
+        resetTimer = undefined;
+      }, 180);
+
+      if (Math.abs(wheelDelta) < WHEEL_THRESHOLD) return;
+
+      const direction = wheelDelta > 0 ? 1 : -1;
+      const currentIndex = PAGES.indexOf(activePageRef.current);
+      const nextIndex = Math.max(0, Math.min(PAGES.length - 1, currentIndex + direction));
+
+      wheelDelta = 0;
+      if (nextIndex === currentIndex) return;
+
+      wheelLockRef.current = true;
+      navigateTo(PAGES[nextIndex]);
+      window.setTimeout(() => {
+        wheelLockRef.current = false;
+      }, WHEEL_COOLDOWN);
+    };
+
+    window.addEventListener("wheel", handleWheel, { passive: true });
+    return () => {
+      window.removeEventListener("wheel", handleWheel);
+      if (resetTimer !== undefined) window.clearTimeout(resetTimer);
+    };
+  }, [navigateTo]);
+
+  const handleNavigate = (page: string) => {
+    if (!PAGES.includes(page as Page)) {
+      return;
+    }
+
+    navigateTo(page as Page);
   };
 
   return (
-    <div className="app">
-
-      {/* ====================================================
-          NAVBAR
-          ==================================================== */}
+    <div className="app-shell relative h-[100dvh] w-full overflow-hidden bg-cream">
 
       <Navbar
         activePage={activePage}
         onNavigate={handleNavigate}
       />
 
-      {/* ====================================================
-          HOME / INTRODUCE
-          ==================================================== */}
+      <PageIndicator page={activePage} />
 
-      {activePage === "home" && (
-        <Hero
-          onNavigate={handleNavigate}
-        />
-      )}
-
-      {/* ====================================================
-          DIVISIONS
-          ==================================================== */}
-
-      {activePage === "divisions" && (
-        <Talent />
-      )}
-
-      {/* ====================================================
-          PROJECT
-          ==================================================== */}
-
-      {activePage === "work" && (
-        <Work />
-      )}
-
-      {/* ====================================================
-          CONTACT
-          ==================================================== */}
-
-      {activePage === "contact" && (
-        <Contact />
-      )}
+      <main ref={pageViewRef} className="page-view">
+        {activePage === "home" && <Hero onNavigate={handleNavigate} />}
+        {activePage === "divisions" && (
+          selectedDivision ? <Talent division={selectedDivision} /> : <Divisions onSelect={setSelectedDivision} />
+        )}
+        {activePage === "work" && <Work />}
+        {activePage === "contact" && <Contact />}
+      </main>
 
     </div>
   );

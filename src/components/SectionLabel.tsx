@@ -1,6 +1,8 @@
+import type { ReactNode } from "react";
+
 type SectionLabelProps = {
   number: string;
-  children: React.ReactNode;
+  children: ReactNode;
 };
 
 function SectionLabel({
@@ -8,7 +10,7 @@ function SectionLabel({
   children,
 }: SectionLabelProps) {
   return (
-    <div className="section-label">
+    <div className="flex w-full justify-between border-b border-blue/20 pb-[15px] text-[9px] font-bold tracking-[.13em]">
       <span>{number}</span>
       <span>{children}</span>
     </div>

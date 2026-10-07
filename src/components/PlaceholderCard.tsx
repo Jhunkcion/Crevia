@@ -8,7 +8,7 @@ type PlaceholderCardProps = {
 function PlaceholderCard({
   number = "01",
   title,
-  subtitle = "CRIVEA",
+  subtitle = "CREVIA",
   onClick,
 }: PlaceholderCardProps) {
   return (

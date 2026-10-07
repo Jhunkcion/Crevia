@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 type TalentItem = {
   id: number;
@@ -146,6 +146,50 @@ export default function Talent({
   const [selectedTalent, setSelectedTalent] = useState<TalentItem | null>(
     null
   );
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const triggerRef = useRef<HTMLButtonElement | null>(null);
+
+  const openTalent = (
+    talent: TalentItem,
+    trigger: HTMLButtonElement
+  ) => {
+    triggerRef.current = trigger;
+    setSelectedTalent(talent);
+  };
+
+  useEffect(() => {
+    if (!selectedTalent) {
+      triggerRef.current?.focus();
+      return;
+    }
+    closeButtonRef.current?.focus();
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setSelectedTalent(null);
+      if (event.key !== "Tab") return;
+      const dialog = closeButtonRef.current?.closest('[role="dialog"]');
+      if (!dialog) return;
+      const focusable = dialog.querySelectorAll<HTMLElement>(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      );
+      if (!focusable.length) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [selectedTalent]);
 
   const talents = division === "tech" ? techTalents : studioTalents;
 
@@ -157,9 +201,11 @@ export default function Talent({
    */
   if (selectedTalent) {
     return (
-      <section className="talent-detail-section">
+      <section className="talent-detail-section" role="dialog" aria-modal="true" aria-labelledby="talent-detail-title">
         <div className="talent-detail-wrapper">
           <button
+            ref={closeButtonRef}
+            type="button"
             className="talent-back-button"
             onClick={() => setSelectedTalent(null)}
           >
@@ -171,6 +217,10 @@ export default function Talent({
               <img
                 src={selectedTalent.image}
                 alt={selectedTalent.name}
+                  width="600"
+                  height="750"
+                loading="lazy"
+                decoding="async"
               />
             </div>
 
@@ -179,11 +229,12 @@ export default function Talent({
                 <div>
                   <span className="talent-detail-hi">Hi, I'm</span>
 
-                  <h1>{selectedTalent.name}</h1>
+                  <h1 id="talent-detail-title">{selectedTalent.name}</h1>
                 </div>
 
                 <div className="talent-detail-arrows">
                   <button
+                    type="button"
                     onClick={() => setSelectedTalent(null)}
                     aria-label="Back"
                   >
@@ -191,6 +242,7 @@ export default function Talent({
                   </button>
 
                   <button
+                    type="button"
                     onClick={() => setSelectedTalent(null)}
                     aria-label="Close"
                   >
@@ -218,15 +270,17 @@ export default function Talent({
                     <img
                       src={image}
                       alt={`${selectedTalent.name} portfolio ${index + 1}`}
+                      width="500"
+                      height="500"
+                      loading="lazy"
+                      decoding="async"
                     />
                   </div>
                 ))}
               </div>
 
               <div className="talent-detail-side-buttons">
-                <button>↗</button>
-                <button>↩</button>
-                <button>↪</button>
+                <button type="button" aria-label="Close talent details" onClick={() => setSelectedTalent(null)}>↗</button>
               </div>
             </div>
           </div>
@@ -257,14 +311,19 @@ export default function Talent({
         <div className="talent-team-list">
           {talents.map((talent) => (
             <button
+              type="button"
               className="talent-team-card"
               key={talent.id}
-              onClick={() => setSelectedTalent(talent)}
+              onClick={(event) => openTalent(talent, event.currentTarget)}
             >
               <div className="talent-team-photo">
                 <img
                   src={talent.image}
                   alt={talent.name}
+                  width="600"
+                  height="750"
+                  loading="lazy"
+                  decoding="async"
                 />
               </div>
 
@@ -283,14 +342,15 @@ export default function Talent({
             : "Studio Member highlight"}
         </div>
 
-        <div
-          className="talent-highlight-card"
-          onClick={() => setSelectedTalent(talents[0])}
-        >
+        <div className="talent-highlight-card">
           <div className="talent-highlight-photo">
             <img
               src={talents[0].image}
               alt={talents[0].name}
+              width="600"
+              height="600"
+              loading="lazy"
+              decoding="async"
             />
           </div>
 
@@ -302,9 +362,7 @@ export default function Talent({
               </div>
 
               <div className="talent-highlight-arrows">
-                <button>↩</button>
-                <button>↪</button>
-                <button>↗</button>
+                <button type="button" aria-label="Open talent details" onClick={(event) => openTalent(talents[0], event.currentTarget)}>↗</button>
               </div>
             </div>
 
@@ -317,16 +375,18 @@ export default function Talent({
                 <img
                   key={index}
                   src={image}
-                  alt={`${talents[0].name} portfolio`}
+                  alt={`${talents[0].name} portfolio ${index + 1}`}
+                  width="500"
+                  height="500"
+                  loading="lazy"
+                  decoding="async"
                 />
               ))}
             </div>
           </div>
 
           <div className="talent-highlight-side">
-            <button>↗</button>
-            <button>↩</button>
-            <button>↪</button>
+            <button type="button" aria-label="Open talent details" onClick={(event) => openTalent(talents[0], event.currentTarget)}>↗</button>
           </div>
         </div>
 
