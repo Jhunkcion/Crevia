@@ -111,25 +111,14 @@
 .divisions-grid { display: grid; grid-template-columns: repeat(2, minmax(20rem, 31rem)); gap: clamp(3rem, 8vw, 7rem); width: 100%; max-width: 68rem; justify-content: center; }
 .division-card { position: relative; display: flex; aspect-ratio: .82; align-items: flex-end; justify-content: center; padding: 2rem; overflow: hidden; border-radius: 1rem; color: #f7fbff; background: #0E426B; cursor: pointer; transition: transform .3s ease, background .3s ease; }
 .division-card:hover { transform: translateY(-.5rem); background: #12527f; }
-
-.division-card__label { position: relative; z-index: 1; padding: 0; font-size: clamp(2rem, 3vw, 3rem); font-weight: 300; line-height: 1; transform: translateY(-4rem); }
-.division-card__label-line { position: absolute; z-index: 1; width: 10rem; height: .50rem; background: #65bafa; bottom: 1rem; transform: translateY(-4rem); }
-
+.division-card__label { position: relative; z-index: 1; padding: 0 1.4rem .45rem; border-bottom: .35rem solid #65bafa; font-size: clamp(2rem, 3vw, 3rem); font-weight: 300; line-height: 1; }
 .division-card--studio { align-items: flex-end; justify-content: flex-end; }
 .division-card--studio .division-card__label { margin-right: 8%; }
-.division-card--studio .division-card__label-line { right: 10%; }
-
 .division-card--tech { align-items: flex-end; justify-content: flex-start; }
 .division-card--tech .division-card__label { margin-left: 8%; }
-.division-card--tech .division-card__label-line { left: 10%; }
-
-.division-card__top-line,
-.division-card__bottom-line { position: absolute; height: .35rem; background: #65bafa; top: 1.5rem; left: 50%; width: 38%; }
-
-.division-card--studio .division-card__bottom-line { right: 60%; bottom: 2rem; width: 35%; }
-
-.division-card--tech .division-card__bottom-line { right: 5%; bottom: 2rem; width: 35%; }
-
+.division-card__top-line, .division-card__bottom-line { position: absolute; height: .35rem; background: #65bafa; }
+.division-card__top-line { top: 1rem; left: 25%; width: 38%; }
+.division-card__bottom-line { right: 8%; bottom: 1rem; width: 35%; }
 .page-indicator { position: fixed; top: 50%; left: 3.5rem; z-index: 51; display: flex; flex-direction: column; align-items: center; gap: 1.35rem; color: #65bafa; transform: translateY(-50%); pointer-events: none; }
 .page-indicator__line { width: 2px; height: 5.3rem; background: currentColor; }
 .page-indicator__line--short { height: 5.3rem; }
