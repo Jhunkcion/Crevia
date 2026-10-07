@@ -36,7 +36,7 @@ export default function Navbar({
 
           <button
             type="button"
-            className={`rounded-full px-3 py-2 text-xs tracking-widest text-[#003077] transition hover:bg-blue/10 ${
+            className={`rounded-full px-3 py-2 text-sm tracking-widest text-[#003077] transition hover:bg-blue/10 ${
               activePage === "home"
                 ? "active font-bold"
                 : "font-normal"
@@ -53,7 +53,7 @@ export default function Navbar({
 
           <button
             type="button"
-            className={`rounded-full px-3 py-2 text-xs tracking-widest text-[#003077] transition hover:bg-blue/10 ${
+            className={`rounded-full px-3 py-2 text-sm tracking-widest text-[#003077] transition hover:bg-blue/10 ${
               activePage === "divisions"
                 ? "active font-bold"
                 : "font-normal"
@@ -72,23 +72,34 @@ export default function Navbar({
             CENTER LOGO
             ================================================= */}
 
+        {/* Logo */}
         <button
           type="button"
-          className="absolute left-1/2 flex -translate-x-1/2 items-center gap-2 font-bold tracking-[.18em] text-blue"
+          className="absolute left-[51.5%] top-[60%] -translate-x-[150%] -translate-y-1/2"
+          onClick={() =>
+            handleNavigate("home")
+          }
+          aria-label="CREVIA Logo"
+        >
+          <img
+            src="/crevia-logo.png"
+            alt="CREVIA"
+            className="h-16 w-18"
+            width="72"
+            height="64"
+            decoding="async"
+          />
+        </button>
+
+        {/* Text CREVIA */}
+        <button
+          type="button"
+          className="absolute left-[47%] top-[50%] -translate-x-[-50%] -translate-y-1/2 font-bold tracking-[.18em] text-blue"
           onClick={() =>
             handleNavigate("home")
           }
           aria-label="CREVIA Home"
         >
-          <img
-            src="/crevia-logo.png"
-            alt="CREVIA"
-            className="h-7 w-7 object-contain"
-            width="28"
-            height="28"
-            decoding="async"
-          />
-
           <span className="navbar__brand-text">
             CREVIA
           </span>
@@ -104,7 +115,7 @@ export default function Navbar({
 
           <button
             type="button"
-            className={`rounded-full px-3 py-2 text-xs tracking-widest text-[#003077] transition hover:bg-blue/10 ${
+            className={`rounded-full px-3 py-2 text-sm tracking-widest text-[#003077] transition hover:bg-blue/10 ${
               activePage === "work"
                 ? "active font-bold"
                 : "font-normal"
@@ -121,7 +132,7 @@ export default function Navbar({
 
           <button
             type="button"
-            className={`rounded-full px-3 py-2 text-xs tracking-widest text-[#003077] transition hover:bg-blue/10 ${
+            className={`rounded-full px-3 py-2 text-sm tracking-widest text-[#003077] transition hover:bg-blue/10 ${
               activePage === "contact"
                 ? "active font-bold"
                 : "font-normal"
