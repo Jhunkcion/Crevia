@@ -16,19 +16,13 @@ export default function Navbar({
 
   return (
     <>
-      {/* ===================================================
-          PAGE TRANSITION
-          =================================================== */}
+      {/* PAGE TRANSITION */}
 
-      {/* ===================================================
-          NAVBAR
-          =================================================== */}
+      {/* NAVBAR */}
 
       <nav aria-label="Primary navigation" className="fixed inset-x-0 top-0 z-50 flex h-16 items-center justify-between border-b border-slate-200 bg-cream/95 px-6 backdrop-blur md:px-10">
 
-        {/* =================================================
-            LEFT
-            ================================================= */}
+        {/* LEFT */}
 
         <div className="flex items-center gap-2 md:gap-5">
 
@@ -68,9 +62,7 @@ export default function Navbar({
 
         </div>
 
-        {/* =================================================
-            CENTER LOGO
-            ================================================= */}
+        {/*CENTER LOGO*/}
 
         {/* Logo */}
         <button
@@ -105,9 +97,7 @@ export default function Navbar({
           </span>
         </button>
 
-        {/* =================================================
-            RIGHT
-            ================================================= */}
+        {/* RIGHT */}
 
         <div className="flex items-center gap-2 md:gap-5">
 
