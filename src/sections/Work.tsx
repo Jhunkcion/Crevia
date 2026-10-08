@@ -1,62 +1,79 @@
-function Work() {
+const PROJECTS = [
+  {
+    className: "gridy-2 gridyhe-1",
+    title: "Item Title",
+    time: "17:22 17th Feb 2015",
+    who: "Bruce Wayne",
+    excerpt: "Lorem ipsum dolor set amet, some dummy content..",
+  },
+  {
+    className: "gridy-1 gridyhe-1",
+    title: "Item Title",
+    time: "17:22 17th Feb 2015",
+    who: "Harvey Dent",
+    excerpt: "Lorem ipsum dolor set amet, some dummy content..",
+  },
+  {
+    className: "gridy-1 gridyhe-2",
+    title: "Item Title",
+    time: "17:22 17th Feb 2015",
+    who: "Clark Kent",
+    excerpt: "Lorem ipsum dolor set amet, some dummy content..",
+  },
+  {
+    className: "gridy-2 gridyhe-1",
+    title: "Item Title",
+    time: "17:22 17th Feb 2015",
+    who: "Tony Stark",
+    excerpt: "Lorem ipsum dolor set amet, some dummy content..",
+  },
+  {
+    className: "gridy-1 gridyhe-1",
+    title: "Item Title",
+    time: "17:22 17th Feb 2015",
+    who: "Steve Rogers",
+    excerpt: "Lorem ipsum dolor set amet, some dummy content..",
+  },
+  {
+    className: "gridy-1 gridyhe-1",
+    title: "Item Title",
+    time: "17:22 17th Feb 2015",
+    who: "Natasha Romanoff",
+    excerpt: "Lorem ipsum dolor set amet, some dummy content..",
+  },
+];
+
+export default function Work() {
   return (
-    <section id="work" className="relative min-h-screen bg-blue px-5 pb-16 pt-24 text-cream md:p-[120px_34px]">
-      <div className="flex w-full justify-between border-b border-white/20 pb-[15px] text-[9px] font-bold tracking-[.13em]">
-        <span>02</span>
-        <span>SELECTED WORK</span>
-      </div>
+    <section id="work" className="relative w-full">
+      <div className="gridywrap">
+        {PROJECTS.map((item, index) => (
+          <div key={index} className={item.className}>
+            <div
+              className="gridimg"
+              style={{ backgroundImage: "url(/project-bg.png)" }}
+            >
+              &nbsp;
+            </div>
 
-      <div className="mt-12 grid grid-cols-1 gap-[15px] md:mt-[70px] md:grid-cols-2">
-        <a href="mailto:hello@crevia.com?subject=Identity project" className="relative flex min-h-[420px] flex-col justify-between border border-white/25 p-[22px] transition duration-300 hover:-translate-y-[5px] hover:bg-cream hover:text-blue md:row-span-2 md:min-h-[795px]">
-          <span>01 / EXPERIENCE</span>
-
-          <div>
-            <h3>IDENTITY</h3>
-            <p>
-              Building visual systems for ambitious
-              ideas.
-            </p>
+            <div className="gridinfo">
+              <h3>{item.title}</h3>
+              <div className="gridmeta">
+                <p className="gridwhen">
+                  <i className="fa fa-clock-o"></i> {item.time}
+                </p>
+                <p className="gridwho">
+                  <i className="fa fa-user"></i> {item.who}
+                </p>
+              </div>
+              <p className="gridexerpt">{item.excerpt}</p>
+              <a href="#" className="grid-btn grid-more">
+                <span>More</span> <i className="fa fa-plus"></i>
+              </a>
+            </div>
           </div>
-
-          <span className="work-card__arrow">
-            ↗
-          </span>
-        </a>
-
-        <a href="mailto:hello@crevia.com?subject=Digital project" className="relative flex min-h-[300px] flex-col justify-between border border-white/25 p-[22px] transition duration-300 hover:-translate-y-[5px] hover:bg-cream hover:text-blue md:min-h-[390px]">
-          <span>02 / DIGITAL</span>
-
-          <div>
-            <h3>INTERFACE</h3>
-            <p>
-              Digital experiences designed around
-              people.
-            </p>
-          </div>
-
-          <span className="work-card__arrow">
-            ↗
-          </span>
-        </a>
-
-        <a href="mailto:hello@crevia.com?subject=Creative project" className="relative flex min-h-[300px] flex-col justify-between border border-white/25 p-[22px] transition duration-300 hover:-translate-y-[5px] hover:bg-cream hover:text-blue md:min-h-[390px]">
-          <span>03 / CREATIVE</span>
-
-          <div>
-            <h3>STORY</h3>
-            <p>
-              Visual stories that connect brands with
-              culture.
-            </p>
-          </div>
-
-          <span className="work-card__arrow">
-            ↗
-          </span>
-        </a>
+        ))}
       </div>
     </section>
   );
 }
-
-export default Work;

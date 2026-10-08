@@ -39,6 +39,7 @@ export default function Intro() {
     };
   }, []);
 
+  // Jan dihapus Le, ni tuk parallax
   // Each shape animates over ~26.5% of scroll, staggered by ~28.5%
   // Shape 1: 2.5% – 29%   | Shape 2: 31% – 57.5%  | Shape 3: 59.5% – 86%
   const curve    = reducedMotion ? 1 : ease((progress - 0.025) / 0.265);
@@ -106,12 +107,9 @@ export default function Intro() {
 
         {/* ── Scroll indicator ── */}
         <div
-          className="absolute bottom-10 flex flex-col items-center gap-2 font-['Inter:Regular'] text-[10px] tracking-[0.12em] text-[#2f6288]"
+          className="absolute bottom-10 flex flex-col items-center gap-2"
           aria-hidden="true"
         >
-          <span>
-            {progress >= 0.95 ? "SCROLL UP TO REPLAY" : "SCROLL TO ASSEMBLE"}
-          </span>
           <span
             className={`h-6 w-px bg-[#80bce5] transition-opacity duration-500 ${
               progress >= 0.95 ? "opacity-30" : "opacity-100"
