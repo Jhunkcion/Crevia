@@ -86,24 +86,12 @@
   100% { opacity: 1; clip-path: inset(0 0 100%); }
 }
 
-.talent-overlay,
-.talent-profile-overlay {
+.talent-overlay {
   animation: talent-overlay-in .28s ease-out both;
 }
 
 .talent-overlay__panel {
   animation: talent-panel-in .38s cubic-bezier(.22, 1, .36, 1) both;
-}
-
-.talent-profile-overlay__panel {
-  opacity: 0;
-  transform: translateY(1.25rem) scale(.97);
-  transition: opacity .38s ease, transform .38s cubic-bezier(.22, 1, .36, 1);
-}
-
-.talent-profile-overlay__panel--open {
-  opacity: 1;
-  transform: translateY(0) scale(1);
 }
 
 @keyframes talent-overlay-in {
@@ -114,27 +102,6 @@
 @keyframes talent-panel-in {
   from { opacity: 0; transform: translateY(1.25rem) scale(.97); }
   to { opacity: 1; transform: translateY(0) scale(1); }
-}
-
-.talent-team-section,
-.talent-detail-section {
-  position: relative;
-  inset: 0;
-  z-index: 55;
-  overflow-y: auto;
-  min-height: 100vh;
-  padding: 7rem 2rem 3rem;
-  background: rgb(7 25 35 / .72);
-}
-
-.talent-detail-section { position: fixed; }
-
-.talent-team-container,
-.talent-detail-wrapper {
-  width: min(100%, 72rem);
-  margin: 0 auto;
-  padding: 2rem;
-  background: var(--color-cream);
 }
 
 
@@ -175,100 +142,11 @@
 
 @media (prefers-reduced-motion: no-preference) {
   .divisions-page,
-  .talent-team-section,
-  .talent-detail-section,
   #work,
   #contact {
     scroll-snap-align: start;
   }
 }
-
-.talent-team-header,
-.talent-highlight-top,
-.talent-detail-heading {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 1rem;
-}
-
-.talent-team-header h1,
-.talent-detail-heading h1,
-.talent-highlight-content h2 {
-  margin: 0;
-  letter-spacing: -.06em;
-  line-height: .9;
-}
-
-.talent-team-header h1 { font-size: clamp(3rem, 8vw, 7rem); }
-.talent-team-header > span,
-.talent-highlight-title { font-size: .7rem; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; }
-
-.talent-team-list {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 1rem;
-  margin-top: 4rem;
-}
-
-.talent-team-card {
-  display: block;
-  width: 100%;
-  padding: 0;
-  color: inherit;
-  text-align: left;
-  background: transparent;
-  cursor: pointer;
-}
-
-.talent-team-photo,
-.talent-highlight-photo,
-.talent-detail-photo,
-.talent-portfolio-image {
-  overflow: hidden;
-  aspect-ratio: 4 / 5;
-  background: var(--color-blue-dark);
-}
-
-.talent-team-photo img,
-.talent-highlight-photo img,
-.talent-detail-photo img,
-.talent-portfolio-image img,
-.talent-highlight-portfolio img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.talent-team-name { padding: .8rem 0 .5rem; font-weight: 700; }
-.talent-team-blue-line { height: 2px; background: var(--color-blue); }
-.talent-highlight-title { margin-top: 4rem; }
-.talent-highlight-card { display: grid; grid-template-columns: 15rem 1fr auto; gap: 2rem; margin-top: 1rem; padding: 1rem; border: 1px solid rgb(11 58 130 / .2); }
-.talent-highlight-photo { aspect-ratio: 1; }
-.talent-highlight-content { padding: .5rem 0; }
-.talent-highlight-content p { max-width: 42rem; line-height: 1.6; }
-.talent-highlight-content small { color: rgb(11 58 130 / .65); }
-.talent-highlight-arrows,
-.talent-highlight-side,
-.talent-detail-arrows,
-.talent-detail-side-buttons { display: flex; gap: .5rem; }
-.talent-highlight-arrows button,
-.talent-highlight-side button,
-.talent-detail-arrows button,
-.talent-detail-side-buttons button { width: 2.2rem; height: 2.2rem; border: 1px solid currentColor; border-radius: 999px; background: transparent; cursor: pointer; }
-.talent-highlight-portfolio { display: grid; grid-template-columns: repeat(2, 5rem); gap: .5rem; margin-top: 1.5rem; }
-.talent-highlight-portfolio img { aspect-ratio: 1; }
-.talent-detail-wrapper { padding-top: 1rem; }
-.talent-back-button { margin-bottom: 2rem; padding: .5rem 0; color: inherit; background: transparent; font-weight: 700; cursor: pointer; }
-.talent-detail-card { display: grid; grid-template-columns: minmax(16rem, .8fr) 1.2fr; gap: 3rem; }
-.talent-detail-heading h1 { font-size: clamp(3rem, 7vw, 7rem); }
-.talent-detail-line { height: 1px; margin: 2rem 0; background: rgb(11 58 130 / .2); }
-.talent-detail-description { font-size: 1.2rem; line-height: 1.5; }
-.talent-detail-specialization { color: rgb(11 58 130 / .65); line-height: 1.6; }
-.talent-detail-portfolio { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-top: 2rem; }
-.talent-detail-side-buttons { margin-top: 2rem; }
-
-.talent-team-section, .talent-detail-section { animation: section-enter 1.35s cubic-bezier(.65, 0, .35, 1) both; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 1ms !important; scroll-behavior: auto !important; transition-duration: 1ms !important; }
@@ -280,22 +158,14 @@
   .divisions-page { padding: 7rem 1.25rem 2rem; }
   .divisions-grid { grid-template-columns: 1fr; max-width: 20rem; }
   .page-indicator { display: none; }
-  .talent-detail-section, .talent-team-section { padding: 88px 20px 32px !important; }
-  .talent-team-list { grid-template-columns: 1fr !important; }
-  .talent-highlight-card { display: block !important; }
-  .talent-highlight-side { display: none !important; }
 }
 
 @media (max-width: 900px) {
   .divisions-page { padding: 7rem 2rem 3rem; }
   .divisions-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.5rem; }
   .page-indicator { left: 1rem; transform: translateY(-50%) scale(.7); }
-  .talent-team-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .talent-highlight-card, .talent-detail-card { grid-template-columns: 1fr; }
-  .talent-highlight-photo { max-width: 18rem; }
 }
 
 @media (max-width: 640px) {
   .divisions-grid { grid-template-columns: 1fr; }
-  .talent-team-list { grid-template-columns: 1fr !important; }
 }

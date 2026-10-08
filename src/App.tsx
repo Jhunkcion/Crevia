@@ -6,7 +6,7 @@ import Intro from "./sections/Intro";
 import Hero from "./sections/Hero";
 import Work from "./sections/Work";
 import Contact from "./sections/Contact";
-import Talent from "./sections/Talent";
+import TeamSection from "./components/TeamSection";
 import Divisions from "./sections/Divisions";
 
 type Section = "intro" | "home" | "divisions" | "work" | "contact";
@@ -71,6 +71,13 @@ export default function App() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [selectedDivision]);
 
+  useEffect(() => {
+    if (selectedDivision) {
+      document.body.style.overflow = "hidden";
+      return () => { document.body.style.overflow = ""; };
+    }
+  }, [selectedDivision]);
+
   // ── Scroll to section ──
   const handleNavigate = useCallback((page: string) => {
     if (page !== "divisions") setSelectedDivision(null);
@@ -131,12 +138,15 @@ export default function App() {
       </section>
 
       {/* ── Talent overlay (triggered from Divisions) ── */}
-      {activePage === "divisions" && selectedDivision && (
+      {selectedDivision && (
         <div
           className="talent-overlay fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-md"
           role="dialog"
           aria-modal="true"
-          aria-label="Team profile"
+          aria-label="Team profiles"
+          onMouseDown={(event) => {
+            if (event.target === event.currentTarget) setSelectedDivision(null);
+          }}
         >
           <div className="talent-overlay__panel relative h-[90vh] w-[90vw] max-w-[1400px] overflow-hidden rounded-lg bg-white shadow-2xl">
             <button
@@ -147,7 +157,7 @@ export default function App() {
             >
               ←
             </button>
-            <Talent division={selectedDivision} />
+            <TeamSection />
           </div>
         </div>
       )}
