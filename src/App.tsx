@@ -2,172 +2,121 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 import Navbar from "./components/Navbar";
 
+import Intro from "./sections/Intro";
 import Hero from "./sections/Hero";
 import Work from "./sections/Work";
 import Contact from "./sections/Contact";
 import Talent from "./sections/Talent";
 import Divisions from "./sections/Divisions";
 
-type Page = "home" | "divisions" | "work" | "contact";
-
-function PageIndicator({ page }: { page: Page }) {
-  return (
-    <aside className={`page-indicator page-indicator--${page}`} aria-label={`Current page: ${page}`}>
-      <span className="page-indicator__line" aria-hidden="true" />
-      <span className="page-indicator__slashes" aria-hidden="true">
-        <i />
-        <i />
-        <i />
-        <i />
-      </span>
-      <span className="page-indicator__line page-indicator__line--short" aria-hidden="true" />
-      <span className="page-indicator__dots" aria-hidden="true">·<br />·<br />·</span>
-    </aside>
-  );
-}
-
-const PAGES: readonly Page[] = [
-  "home",
-  "divisions",
-  "work",
-  "contact",
-];
-
-const DEFAULT_PAGE: Page = "home";
-const WHEEL_THRESHOLD = 70;
-const WHEEL_COOLDOWN = 700;
-
-function pageFromHash(): Page {
-  const value = window.location.hash.slice(1);
-  if (PAGES.includes(value as Page)) {
-    return value as Page;
-  }
-
-  if (window.location.hash) {
-    window.history.replaceState(null, "", `#${DEFAULT_PAGE}`);
-  }
-
-  return DEFAULT_PAGE;
-}
+type Section = "intro" | "home" | "divisions" | "work" | "contact";
 
 export default function App() {
-  const [activePage, setActivePage] = useState<Page>(pageFromHash);
+  const [activePage, setActivePage] = useState<Section>("intro");
   const [selectedDivision, setSelectedDivision] = useState<"studio" | "tech" | null>(null);
 
-  const activePageRef = useRef<Page>(pageFromHash());
-  const wheelLockRef = useRef(false);
-  const pageViewRef = useRef<HTMLElement>(null);
+  const sectionRefs = useRef<Record<Section, HTMLElement | null>>({
+    intro: null,
+    home: null,
+    divisions: null,
+    work: null,
+    contact: null,
+  });
 
+  // ── Track active section via IntersectionObserver ──
   useEffect(() => {
-    activePageRef.current = activePage;
-  }, [activePage]);
+    const observers: IntersectionObserver[] = [];
 
-  const navigateTo = useCallback((page: Page) => {
-    if (page === activePageRef.current) {
-      return;
-    }
+    (Object.entries(sectionRefs.current) as [Section, HTMLElement | null][]).forEach(
+      ([key, el]) => {
+        if (!el) return;
+        const observer = new IntersectionObserver(
+          ([entry]) => {
+            if (entry.isIntersecting) setActivePage(key);
+          },
+          { threshold: 0.4 },
+        );
+        observer.observe(el);
+        observers.push(observer);
+      },
+    );
 
-    activePageRef.current = page;
-    setActivePage(page);
-    if (page !== "divisions") setSelectedDivision(null);
-    window.history.pushState(null, "", `#${page}`);
-    pageViewRef.current?.scrollTo({ top: 0, behavior: "auto" });
-
+    return () => observers.forEach((o) => o.disconnect());
   }, []);
 
-  useEffect(() => {
-    const handlePopState = () => {
-      const page = pageFromHash();
-      activePageRef.current = page;
-      setActivePage(page);
-      setSelectedDivision(null);
-      pageViewRef.current?.scrollTo({ top: 0, behavior: "auto" });
-    };
-    window.addEventListener("popstate", handlePopState);
-    window.addEventListener("hashchange", handlePopState);
-
-    return () => {
-      window.removeEventListener("popstate", handlePopState);
-      window.removeEventListener("hashchange", handlePopState);
-    };
-  }, [navigateTo]);
-
-  useEffect(() => {
-    let wheelDelta = 0;
-    let resetTimer: number | undefined;
-
-    const handleWheel = (event: WheelEvent) => {
-      const target = event.target;
-      if (target instanceof Element && target.closest("[role=dialog]")) return;
-      if (wheelLockRef.current || Math.abs(event.deltaY) < 2) return;
-
-      wheelDelta += event.deltaY;
-      if (resetTimer !== undefined) window.clearTimeout(resetTimer);
-      resetTimer = window.setTimeout(() => {
-        wheelDelta = 0;
-        resetTimer = undefined;
-      }, 180);
-
-      if (Math.abs(wheelDelta) < WHEEL_THRESHOLD) return;
-
-      const direction = wheelDelta > 0 ? 1 : -1;
-      const currentIndex = PAGES.indexOf(activePageRef.current);
-      const nextIndex = Math.max(0, Math.min(PAGES.length - 1, currentIndex + direction));
-
-      wheelDelta = 0;
-      if (nextIndex === currentIndex) return;
-
-      wheelLockRef.current = true;
-      navigateTo(PAGES[nextIndex]);
-      window.setTimeout(() => {
-        wheelLockRef.current = false;
-      }, WHEEL_COOLDOWN);
-    };
-
-    window.addEventListener("wheel", handleWheel, { passive: true });
-    return () => {
-      window.removeEventListener("wheel", handleWheel);
-      if (resetTimer !== undefined) window.clearTimeout(resetTimer);
-    };
-  }, [navigateTo]);
-
-  const handleNavigate = (page: string) => {
-    if (!PAGES.includes(page as Page)) {
-      return;
+  // ── Scroll to section ──
+  const handleNavigate = useCallback((page: string) => {
+    const el = sectionRefs.current[page as Section];
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth" });
     }
-
-    navigateTo(page as Page);
-  };
+  }, []);
 
   return (
-    <div className="app-shell relative h-[100dvh] w-full overflow-hidden bg-cream">
+    <div className="relative w-full bg-cream">
 
       <Navbar
         activePage={activePage}
         onNavigate={handleNavigate}
       />
 
-      <PageIndicator page={activePage} />
+      {/* ── Intro: scroll-driven parallax ── */}
+      <section
+        ref={(el) => { sectionRefs.current.intro = el; }}
+        id="intro"
+      >
+        <Intro />
+      </section>
 
-      <main ref={pageViewRef} className="page-view">
-        {activePage === "home" && <Hero onNavigate={handleNavigate} />}
-        {activePage === "divisions" && <Divisions onSelect={setSelectedDivision} />}
-        {activePage === "work" && <Work />}
-        {activePage === "contact" && <Contact />}
-      </main>
+      {/* ── Hero ── */}
+      <section
+        ref={(el) => { sectionRefs.current.home = el; }}
+        id="home"
+      >
+        <Hero onNavigate={handleNavigate} />
+      </section>
 
-      {/* Talent overlay with backdrop blur */}
-      {activePage === "divisions" && selectedDivision && (
-        <div className="talent-overlay fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-md">
-                  <div className="talent-overlay__panel relative h-[90vh] w-[90vw] max-w-[1400px] overflow-hidden rounded-lg bg-white shadow-2xl">
+      {/* ── Divisions ── */}
+      <section
+        ref={(el) => { sectionRefs.current.divisions = el; }}
+        id="divisions"
+      >
+        <Divisions onSelect={setSelectedDivision} />
+      </section>
+
+      {/* ── Work ── */}
+      <section
+        ref={(el) => { sectionRefs.current.work = el; }}
+        id="work"
+      >
+        <Work />
+      </section>
+
+      {/* ── Contact ── */}
+      <section
+        ref={(el) => { sectionRefs.current.contact = el; }}
+        id="contact"
+      >
+        <Contact />
+      </section>
+
+      {/* ── Talent overlay (triggered from Divisions) ── */}
+      {selectedDivision && (
+        <div
+          className="talent-overlay fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-md"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Team profile"
+        >
+          <div className="talent-overlay__panel relative h-[90vh] w-[90vw] max-w-[1400px] overflow-hidden rounded-lg bg-white shadow-2xl">
             <button
               type="button"
-              className="absolute top-4 left-4 z-10 p-2 text-2xl leading-none text-black hover:opacity-70"
-                            aria-label="Close team profile"
-                            onClick={() => setSelectedDivision(null)}
-                          >
-                            ←
-                          </button>
+              className="absolute left-4 top-4 z-10 p-2 text-2xl leading-none text-black hover:opacity-70"
+              aria-label="Close team profile"
+              onClick={() => setSelectedDivision(null)}
+            >
+              ←
+            </button>
             <Talent division={selectedDivision} />
           </div>
         </div>
