@@ -152,10 +152,12 @@
 .page-indicator__slashes { display: flex; flex-direction: column; gap: .55rem; }
 .page-indicator__slashes i { display: block; width: 1.2rem; height: .42rem; background: currentColor; transform: skewX(-45deg) rotate(-45deg) scaleY(2); transition: transform .45s ease, opacity .45s ease; }
 .page-indicator__dots { display: flex; flex-direction: column; gap: .55rem; font-size: 1.4rem; line-height: .45; }
+.page-indicator--intro .page-indicator__slashes i:nth-child(1),
 .page-indicator--home .page-indicator__slashes i:nth-child(1),
 .page-indicator--divisions .page-indicator__slashes i:nth-child(2),
 .page-indicator--work .page-indicator__slashes i:nth-child(3),
 .page-indicator--contact .page-indicator__slashes i:nth-child(4) { transform: translate(1.2rem, -.60rem) skewX(-45deg) rotate(-45deg) scaleY(2); }
+.page-indicator--intro .page-indicator__slashes i:nth-child(1),
 .page-indicator--home .page-indicator__slashes i:nth-child(1),
 .page-indicator--divisions .page-indicator__slashes i:nth-child(2),
 .page-indicator--work .page-indicator__slashes i:nth-child(3),

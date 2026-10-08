@@ -106,12 +106,9 @@ export default function Intro() {
 
         {/* ── Scroll indicator ── */}
         <div
-          className="absolute bottom-10 flex flex-col items-center gap-2 font-['Inter:Regular'] text-[10px] tracking-[0.12em] text-[#2f6288]"
+          className="absolute bottom-10 flex flex-col items-center gap-2"
           aria-hidden="true"
         >
-          <span>
-            {progress >= 0.95 ? "SCROLL UP TO REPLAY" : "SCROLL TO ASSEMBLE"}
-          </span>
           <span
             className={`h-6 w-px bg-[#80bce5] transition-opacity duration-500 ${
               progress >= 0.95 ? "opacity-30" : "opacity-100"
