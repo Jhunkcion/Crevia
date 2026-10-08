@@ -91,9 +91,19 @@
   animation: talent-overlay-in .28s ease-out both;
 }
 
-.talent-overlay__panel,
-.talent-profile-overlay__panel {
+.talent-overlay__panel {
   animation: talent-panel-in .38s cubic-bezier(.22, 1, .36, 1) both;
+}
+
+.talent-profile-overlay__panel {
+  opacity: 0;
+  transform: translateY(1.25rem) scale(.97);
+  transition: opacity .38s ease, transform .38s cubic-bezier(.22, 1, .36, 1);
+}
+
+.talent-profile-overlay__panel--open {
+  opacity: 1;
+  transform: translateY(0) scale(1);
 }
 
 @keyframes talent-overlay-in {

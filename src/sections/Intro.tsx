@@ -48,7 +48,6 @@ export default function Intro() {
   return (
     <section
       ref={sectionRef}
-      id="intro"
       className="relative h-[400dvh] motion-reduce:h-dvh"
       aria-label="Scroll to assemble the logo"
     >

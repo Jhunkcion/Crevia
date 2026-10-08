@@ -146,6 +146,7 @@ export default function Talent({
   const [selectedTalent, setSelectedTalent] = useState<TalentItem | null>(
     null
   );
+  const [profileOpening, setProfileOpening] = useState(false);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const triggerRef = useRef<HTMLButtonElement | null>(null);
 
@@ -154,7 +155,9 @@ export default function Talent({
     trigger: HTMLButtonElement
   ) => {
     triggerRef.current = trigger;
+    setProfileOpening(false);
     setSelectedTalent(talent);
+    requestAnimationFrame(() => setProfileOpening(true));
   };
 
   useEffect(() => {
@@ -202,7 +205,7 @@ export default function Talent({
   if (selectedTalent) {
     return (
       <div className="talent-profile-overlay fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-md">
-              <div className="talent-profile-overlay__panel relative h-[90vh] w-[90vw] max-w-[1400px] overflow-hidden rounded-lg bg-white shadow-2xl">
+                    <div className={`talent-profile-overlay__panel relative h-[90vh] w-[90vw] max-w-[1400px] overflow-hidden rounded-lg bg-white shadow-2xl ${profileOpening ? "talent-profile-overlay__panel--open" : ""}`}>
           <button
             ref={closeButtonRef}
             type="button"

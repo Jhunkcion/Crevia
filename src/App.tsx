@@ -50,7 +50,7 @@ export default function App() {
           ([entry]) => {
             if (entry.isIntersecting) setActivePage(key);
           },
-          { threshold: 0.4 },
+          { threshold: key === "intro" ? 0.1 : 0.4 },
         );
         observer.observe(el);
         observers.push(observer);
@@ -60,8 +60,20 @@ export default function App() {
     return () => observers.forEach((o) => o.disconnect());
   }, []);
 
+  useEffect(() => {
+    if (!selectedDivision) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setSelectedDivision(null);
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [selectedDivision]);
+
   // ── Scroll to section ──
   const handleNavigate = useCallback((page: string) => {
+    if (page !== "divisions") setSelectedDivision(null);
     const el = sectionRefs.current[page as Section];
     if (el) {
       el.scrollIntoView({ behavior: "smooth" });
@@ -119,7 +131,7 @@ export default function App() {
       </section>
 
       {/* ── Talent overlay (triggered from Divisions) ── */}
-      {selectedDivision && (
+      {activePage === "divisions" && selectedDivision && (
         <div
           className="talent-overlay fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-md"
           role="dialog"
