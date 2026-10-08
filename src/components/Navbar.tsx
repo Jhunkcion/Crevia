@@ -16,8 +16,6 @@ export default function Navbar({
 
   return (
     <>
-      {/* PAGE TRANSITION */}
-
       {/* NAVBAR */}
 
       <nav aria-label="Primary navigation" className="fixed inset-x-0 top-0 z-50 flex h-16 items-center justify-between border-b border-slate-200 bg-cream/95 px-6 backdrop-blur md:px-10">
@@ -76,7 +74,7 @@ export default function Navbar({
           <img
             src="/crevia-logo.png"
             alt="CREVIA"
-            className="h-16 w-18"
+            className="h-16 w-[72px]"
             width="72"
             height="64"
             decoding="async"
