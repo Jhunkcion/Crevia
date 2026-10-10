@@ -133,6 +133,7 @@ export default function App() {
       <section
         ref={(el) => { sectionRefs.current.contact = el; }}
         id="contact"
+        className="w-full bg-[#DFEFFB]"
       >
         <Contact />
       </section>

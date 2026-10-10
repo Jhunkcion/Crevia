@@ -203,109 +203,81 @@
   overflow: hidden;
   background-position: center center;
   background-size: cover;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
-.gridywrap .gridimg img {
-  width: 100%;
-}
-.gridywrap .gridinfo {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  background: rgba(0,0,0,0.4);
-  text-align: center;
-  transition: all 0.8s;
-}
-.gridywrap .gridinfo h3 {
-  font-size: 24px;
-  color: #fff;
-  font-weight: bold;
-  text-transform: uppercase;
-  margin: 130px 0 20px;
-  position: relative;
-}
-.gridywrap .gridinfo h3:after {
-  content: '';
-  width: 25px;
-  border-top: 4px solid #fff;
-  display: block;
-  margin: 0 auto;
-  margin-top: 25px;
-}
-.gridywrap .gridinfo .gridmeta {
-  transition-delay: 0.25s;
-}
-.gridywrap .gridinfo .gridmeta p {
-  display: inline-block;
-  font-size: 13px;
-  color: #fff;
-  margin-bottom: 15px;
-}
-.gridywrap .gridinfo .gridmeta p i {
-  margin-right: 5px;
-}
-.gridywrap .gridinfo .gridmeta p.gridwho {
-  margin-left: 25px;
-}
-.gridywrap .gridinfo p.gridexerpt {
-  width: 60%;
-  margin: 0 auto;
-  line-height: 22px;
-  margin-bottom: 25px;
-  color: #fff;
-  transition-delay: 0.5s;
+.gridywrap div[class*=gridy]:hover .gridimg {
+  transform: scale(1.05);
 }
 
-.gridywrap .gridinfo * {
+.gridywrap .gridinfo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0);
   opacity: 0;
-  transition: all 0.8s;
+  visibility: hidden;
+  transition: opacity 0.35s ease, background-color 0.35s ease, visibility 0.35s ease;
+  z-index: 2;
 }
-.gridywrap .gridinfo h3 {
+
+.gridywrap div[class*=gridy]:hover .gridinfo,
+.gridywrap .gridinfo:hover {
   opacity: 1;
+  visibility: visible;
+  background: rgba(0, 0, 0, 0.45);
 }
+
 .gridywrap .gridinfo .grid-btn {
   color: #fff;
   text-decoration: none;
-  margin: 0 auto;
-  width: 35px;
-  height: 35px;
-  line-height: 35px;
-  border-radius: 25px;
-  border: 1px solid #fff; 
-  display: block;
-  overflow: hidden;
-}
-.gridywrap .gridinfo .grid-btn:hover {
-  width: 75px;
-  background: rgba(0,0,0,0.3);
-}
-.gridywrap .gridinfo .grid-btn span {
-  opacity: 0;
-  display: none;
-  transition: opacity 0.8s;
-}
-.gridywrap .gridinfo .grid-btn:hover span {
-  opacity: 1;
-  display: inline;
-}
-.gridywrap .gridinfo .grid-btn:hover i {
-  opacity: 0;
-  display: none;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border: 1.5px solid rgba(255, 255, 255, 0.85);
+  height: 42px;
+  min-width: 42px;
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 18px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transform: scale(0.92);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+  outline: none;
 }
 
-.gridywrap .gridinfo:hover * {
-  opacity: 0.7;
+.gridywrap div[class*=gridy]:hover .gridinfo .grid-btn,
+.gridywrap .gridinfo:hover .grid-btn {
+  transform: scale(1);
 }
-.gridywrap .gridinfo:hover p {
-  opacity: 1;
+
+.gridywrap .gridinfo .grid-btn i {
+  font-size: 13px;
+  transition: transform 0.3s ease;
 }
-.gridywrap .gridinfo:hover {
-  background: rgba(158, 12, 73, 0.7);
+
+.gridywrap .gridinfo .grid-btn:hover {
+  background: #ffffff;
+  color: #073653;
+  border-color: #ffffff;
+  transform: scale(1.08) !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
 }
-.gridywrap .gridinfo:hover h3 {
-  margin-top: 70px;
-  opacity: 1;
+
+.gridywrap .gridinfo .grid-btn:hover i {
+  transform: rotate(90deg);
 }
 
 
