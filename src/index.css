@@ -109,8 +109,8 @@
 
 .divisions-page { position: relative; display: grid; min-height: 100vh; place-items: center; padding: 7rem 9rem 4rem 8.5rem; background: var(--color-cream); }
 .divisions-grid { display: grid; grid-template-columns: repeat(2, minmax(20rem, 31rem)); gap: clamp(3rem, 8vw, 7rem); width: 100%; max-width: 68rem; justify-content: center; }
-.division-card { position: relative; display: flex; aspect-ratio: .82; padding: 2rem; overflow: hidden; border-radius: 1rem; color: #f7fbff; background: #0E426B; cursor: pointer; transition: transform .3s ease, background .3s ease; }
-.division-card:hover { transform: translateY(-.5rem); background: #12527f; }
+.division-card { position: relative; display: flex; aspect-ratio: .75; overflow: hidden; border-radius: 1.25rem; color: #f7fbff; background: #0E426B; cursor: pointer; transition: transform .4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow .4s cubic-bezier(0.16, 1, 0.3, 1); }
+.division-card:hover, .division-card.is-revealed { transform: translateY(-.5rem); box-shadow: 0 20px 40px -12px rgba(7, 54, 83, 0.5); }
 
 .division-card--studio { align-items: flex-end; justify-content: flex-end; }
 .division-card__label--studio { position: relative; z-index: 1; margin-right: 12%; margin-bottom: 7rem; padding: 0; font-size: clamp(2rem, 3vw, 3rem); font-weight: 300; line-height: 1; }

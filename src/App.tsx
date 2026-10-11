@@ -149,7 +149,7 @@ export default function App() {
             if (event.target === event.currentTarget) setSelectedDivision(null);
           }}
         >
-          <div className="talent-overlay__panel relative h-[90vh] w-[90vw] max-w-[1400px] overflow-hidden rounded-lg bg-white shadow-2xl">
+          <div className="talent-overlay__panel relative h-[90vh] w-[90vw] max-w-[1400px] overflow-y-auto overflow-x-hidden rounded-xl bg-[#F6F6F6] shadow-2xl">
             <button
               type="button"
               className="absolute left-4 top-4 z-10 p-2 text-2xl leading-none text-black hover:opacity-70"
@@ -158,7 +158,7 @@ export default function App() {
             >
               ←
             </button>
-            <TeamSection />
+            <TeamSection division={selectedDivision || "studio"} />
           </div>
         </div>
       )}
