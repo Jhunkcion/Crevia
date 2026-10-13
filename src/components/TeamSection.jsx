@@ -139,6 +139,7 @@ function SilhouettePlaceholder() {
 
 export default function TeamSection({ division = "studio" }) {
   const [selectedId, setSelectedId] = useState(null);
+  const [selectedWork, setSelectedWork] = useState(null);
   const reduceMotion = useReducedMotion();
 
   const teamMembers = division === "tech" ? techMembers : studioMembers;
@@ -147,7 +148,19 @@ export default function TeamSection({ division = "studio" }) {
 
   useEffect(() => {
     setSelectedId(null);
+    setSelectedWork(null);
   }, [division]);
+
+  useEffect(() => {
+    if (!selectedWork) return;
+
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") setSelectedWork(null);
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [selectedWork]);
 
   // Navigate between members in detail view
   const goToNext = () => {
@@ -237,7 +250,9 @@ export default function TeamSection({ division = "studio" }) {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={reduceMotion ? false : { opacity: 0, scale: 0.96, y: -20 }}
             transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-            className="mx-auto flex w-full max-w-5xl items-center justify-center py-2"
+            className={`mx-auto flex w-full max-w-5xl items-center justify-center py-2 ${
+              selectedWork ? "hidden" : ""
+            }`}
           >
             <div className="relative flex w-full flex-col overflow-hidden rounded-2xl bg-[#F6F6F6] shadow-2xl border border-black/10 md:flex-row">
               {/* Left Column: Portrait Photo */}
@@ -329,9 +344,12 @@ export default function TeamSection({ division = "studio" }) {
                   <div className="flex flex-wrap items-center gap-3 sm:gap-4">
                     {selectedMember.works && selectedMember.works.length > 0 ? (
                       selectedMember.works.slice(0, 2).map((img, idx) => (
-                        <div
+                        <button
+                          type="button"
                           key={`${selectedMember.id}-${img}`}
-                          className="aspect-[16/10] w-32 overflow-hidden rounded-lg bg-neutral-900 shadow-md transition-transform duration-300 hover:scale-105 sm:w-40 md:w-44"
+                          onClick={() => setSelectedWork({ img, idx })}
+                          aria-label={`View ${selectedMember.name} project ${idx + 1}`}
+                          className="group relative aspect-[16/10] w-32 cursor-pointer overflow-hidden rounded-lg bg-neutral-900 shadow-md transition-transform duration-300 hover:scale-105 focus-visible:ring-2 focus-visible:ring-[#0E426B] sm:w-40 md:w-44"
                         >
                           <img
                             src={img}
@@ -340,7 +358,10 @@ export default function TeamSection({ division = "studio" }) {
                             decoding="async"
                             className="h-full w-full object-cover"
                           />
-                        </div>
+                          <span className="absolute inset-0 flex items-center justify-center bg-black/0 text-xs font-semibold uppercase tracking-wider text-white opacity-0 transition-all duration-300 group-hover:bg-black/45 group-hover:opacity-100">
+                            View
+                          </span>
+                        </button>
                       ))
                     ) : (
                       <div className="aspect-[16/10] w-32 overflow-hidden rounded-lg bg-neutral-900 shadow-md sm:w-40 md:w-44">
@@ -411,6 +432,51 @@ export default function TeamSection({ division = "studio" }) {
                 </div>
               </div>
             </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {selectedWork && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[80] flex cursor-pointer items-center justify-center bg-black/40 p-4 backdrop-blur-md sm:p-8"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Focused project"
+            onMouseDown={(event) => {
+              if (event.target === event.currentTarget) setSelectedWork(null);
+            }}
+          >
+            <motion.div
+              initial={reduceMotion ? false : { opacity: 0, scale: 0.88, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={reduceMotion ? false : { opacity: 0, scale: 0.9, y: 14 }}
+              transition={{ type: "spring", stiffness: 320, damping: 28 }}
+              className="relative aspect-[4/3] w-full max-w-4xl overflow-hidden bg-transparent sm:aspect-[16/10]"
+              onClick={(event) => event.stopPropagation()}
+            >
+              <img
+                src={selectedWork.img}
+                alt={`${selectedMember.name} project ${selectedWork.idx + 1}`}
+                className="h-full w-full object-cover"
+              />
+              <button
+                type="button"
+                onClick={() => setSelectedWork(null)}
+                aria-label="Close project"
+                className="absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full border border-white/25 bg-black/40 text-xl text-white transition hover:scale-110 hover:bg-black/70"
+              >
+                ×
+              </button>
+              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 to-transparent px-6 pb-6 pt-20 text-white">
+                <h3 className="text-xl font-semibold uppercase tracking-wide sm:text-2xl">
+                  {selectedMember.name} · Project {selectedWork.idx + 1}
+                </h3>
+              </div>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
