@@ -203,6 +203,8 @@ export default function TeamSection({ division = "studio" }) {
                       <img
                         src={member.photo}
                         alt={member.name}
+                        loading="lazy"
+                        decoding="async"
                         className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                       />
                     ) : (
@@ -244,6 +246,7 @@ export default function TeamSection({ division = "studio" }) {
                   <img
                     src={selectedMember.photo}
                     alt={selectedMember.name}
+                    decoding="async"
                     className="h-full w-full object-cover object-top"
                   />
                 ) : (
@@ -327,12 +330,14 @@ export default function TeamSection({ division = "studio" }) {
                     {selectedMember.works && selectedMember.works.length > 0 ? (
                       selectedMember.works.slice(0, 2).map((img, idx) => (
                         <div
-                          key={idx}
+                          key={`${selectedMember.id}-${img}`}
                           className="aspect-[16/10] w-32 overflow-hidden rounded-lg bg-neutral-900 shadow-md transition-transform duration-300 hover:scale-105 sm:w-40 md:w-44"
                         >
                           <img
                             src={img}
                             alt={`${selectedMember.name} work preview ${idx + 1}`}
+                            loading="lazy"
+                            decoding="async"
                             className="h-full w-full object-cover"
                           />
                         </div>

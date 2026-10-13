@@ -41,23 +41,26 @@ export default function App() {
 
   // ── Track active section via IntersectionObserver ──
   useEffect(() => {
-    const observers: IntersectionObserver[] = [];
+    const sections = Object.entries(sectionRefs.current).filter(
+      ([, element]) => element,
+    ) as [Section, HTMLElement][];
+    if (!sections.length) return;
 
-    (Object.entries(sectionRefs.current) as [Section, HTMLElement | null][]).forEach(
-      ([key, el]) => {
-        if (!el) return;
-        const observer = new IntersectionObserver(
-          ([entry]) => {
-            if (entry.isIntersecting) setActivePage(key);
-          },
-          { threshold: key === "intro" ? 0.1 : 0.4 },
-        );
-        observer.observe(el);
-        observers.push(observer);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visibleSection = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+
+        if (visibleSection) {
+          setActivePage(visibleSection.target.id as Section);
+        }
       },
+      { threshold: [0.1, 0.4, 0.75] },
     );
 
-    return () => observers.forEach((o) => o.disconnect());
+    sections.forEach(([, element]) => observer.observe(element));
+    return () => observer.disconnect();
   }, []);
 
   useEffect(() => {
@@ -72,10 +75,9 @@ export default function App() {
   }, [selectedDivision]);
 
   useEffect(() => {
-    if (selectedDivision) {
-      document.body.style.overflow = "hidden";
-      return () => { document.body.style.overflow = ""; };
-    }
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = selectedDivision ? "hidden" : previousOverflow;
+    return () => { document.body.style.overflow = previousOverflow; };
   }, [selectedDivision]);
 
   // ── Scroll to section ──
@@ -158,7 +160,7 @@ export default function App() {
             >
               ←
             </button>
-            <TeamSection division={selectedDivision || "studio"} />
+            <TeamSection division={selectedDivision} />
           </div>
         </div>
       )}
