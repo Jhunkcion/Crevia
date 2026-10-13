@@ -143,7 +143,7 @@ export default function App() {
       {/* ── Talent overlay (triggered from Divisions) ── */}
       {selectedDivision && (
         <div
-          className="talent-overlay fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-md"
+          className="talent-overlay fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md"
           role="dialog"
           aria-modal="true"
           aria-label="Team profiles"
