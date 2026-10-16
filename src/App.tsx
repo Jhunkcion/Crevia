@@ -116,7 +116,7 @@ export default function App() {
 
       <PageIndicator page={activePage} />
 
-      {/* ── Intro: scroll-driven parallax ── */}
+      {/* ── Intro ── */}
       <section
         ref={(el) => { sectionRefs.current.intro = el; }}
         id="intro"
