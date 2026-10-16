@@ -1,7 +1,7 @@
 export default function Intro() {
   return (
     <div
-      className="flex h-dvh w-full items-center justify-center overflow-hidden bg-[#DFEFFB] px-6"
+      className="flex h-dvh w-full items-center justify-center overflow-hidden bg-cream px-6"
       aria-label="Crevia"
     >
       <img
