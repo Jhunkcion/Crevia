@@ -99,7 +99,11 @@ export default function Work() {
     <section id="work" className="relative w-full">
       <div className="gridywrap">
         {PROJECTS.map((item) => (
-          <div key={item.id} className={item.className}>
+          <div
+            key={item.id}
+            className={`${item.className} cursor-pointer`}
+            onClick={() => setSelectedProject(item)}
+          >
             <div
               className="gridimg"
               style={{ backgroundImage: `url(${item.image})` }}

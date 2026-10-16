@@ -163,39 +163,41 @@ export default function TeamSection({ division = "studio" }) {
   };
 
   return (
-    <div className="flex h-full w-full flex-col justify-center bg-[#F6F6F6] p-6 text-black sm:p-10 md:p-12 overflow-y-auto">
+    <div className="w-full text-black">
       <AnimatePresence mode="wait">
         {!selectedMember ? (
           /* ── View 1: List of Talents ("Meet The Team") ── */
           <motion.div
             key="team-list"
-            initial={reduceMotion ? false : { opacity: 0, y: 16 }}
+            initial={reduceMotion ? false : { opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={reduceMotion ? false : { opacity: 0, y: -16 }}
-            transition={{ duration: 0.35, ease: "easeOut" }}
+            exit={reduceMotion ? false : { opacity: 0, y: -12 }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
             className="mx-auto w-full max-w-6xl"
           >
-            <header className="mb-10 flex items-end justify-between gap-6 border-b border-black/10 pb-6 sm:mb-12">
+            {/* Header: positioned comfortably below top bar */}
+            <header className="mb-6 flex flex-col justify-between gap-3 border-b border-black/10 pb-5 sm:mb-8 sm:flex-row sm:items-end">
               <div>
-                <span className="text-xs font-bold tracking-[0.2em] text-[#0E426B] uppercase">
-                  {division === "tech" ? "TECH TALENTS" : "STUDIO TALENTS"}
+                <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#0E426B]">
+                  {division === "tech" ? "Tech Talents" : "Studio Talents"}
                 </span>
-                <h2 className="mt-2 font-serif text-5xl font-light leading-none tracking-tight text-neutral-900 sm:text-6xl md:text-7xl">
+                <h2 className="mt-1 font-serif text-3xl font-light leading-none tracking-tight text-neutral-900 sm:text-5xl md:text-6xl">
                   Meet The Team
                 </h2>
               </div>
-              <p className="hidden max-w-xs text-right text-xs text-neutral-500 sm:block">
-                Click any talent to explore their portfolio, bio, and social channels.
+              <p className="max-w-xs text-xs text-neutral-500">
+                Select a talent below to view their portfolio, bio, and social profiles.
               </p>
             </header>
 
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {/* 2 columns on mobile, 4 on desktop */}
+            <div className="grid grid-cols-2 gap-3 sm:gap-6 lg:grid-cols-4">
               {teamMembers.map((member) => (
                 <button
                   key={member.id}
                   type="button"
                   onClick={() => setSelectedId(member.id)}
-                  className="group relative flex cursor-pointer flex-col overflow-hidden rounded-xl bg-white text-left shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl focus-visible:ring-4 focus-visible:ring-[#0E426B]/30"
+                  className="group relative flex cursor-pointer flex-col overflow-hidden rounded-xl border border-black/5 bg-white text-left shadow-sm transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl focus-visible:ring-4 focus-visible:ring-[#0E426B]/30"
                   aria-label={`View profile of ${member.name}`}
                 >
                   <div className="aspect-[3/4] w-full overflow-hidden bg-neutral-100">
@@ -209,14 +211,14 @@ export default function TeamSection({ division = "studio" }) {
                       <SilhouettePlaceholder />
                     )}
                   </div>
-                  <div className="p-5">
-                    <span className="text-[11px] font-semibold uppercase tracking-wider text-neutral-400">
+                  <div className="p-3 sm:p-5">
+                    <span className="block truncate text-[10px] font-semibold uppercase tracking-wider text-neutral-400 sm:text-[11px]">
                       {member.role}
                     </span>
-                    <h3 className="mt-1 font-serif text-2xl text-neutral-900 group-hover:text-[#0E426B] transition-colors">
+                    <h3 className="mt-0.5 truncate font-serif text-base font-normal text-neutral-900 transition-colors group-hover:text-[#0E426B] sm:text-xl md:text-2xl">
                       {member.name}
                     </h3>
-                    <div className="mt-3 flex items-center gap-1.5 text-xs font-semibold text-[#0E426B]">
+                    <div className="mt-2 flex items-center gap-1 text-[11px] font-semibold text-[#0E426B] sm:mt-3 sm:text-xs">
                       <span>View Profile</span>
                       <span className="transition-transform duration-200 group-hover:translate-x-1">
                         →
@@ -231,15 +233,15 @@ export default function TeamSection({ division = "studio" }) {
           /* ── View 2: Individual Talent Card (Matching Attached Mockup) ── */
           <motion.div
             key={`detail-${selectedMember.id}`}
-            initial={reduceMotion ? false : { opacity: 0, scale: 0.96, y: 20 }}
+            initial={reduceMotion ? false : { opacity: 0, scale: 0.97, y: 16 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={reduceMotion ? false : { opacity: 0, scale: 0.96, y: -20 }}
+            exit={reduceMotion ? false : { opacity: 0, scale: 0.97, y: -16 }}
             transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-            className="mx-auto flex w-full max-w-5xl items-center justify-center py-2"
+            className="mx-auto flex w-full max-w-5xl items-center justify-center py-2 sm:py-4"
           >
-            <div className="relative flex w-full flex-col overflow-hidden rounded-2xl bg-[#F6F6F6] shadow-2xl border border-black/10 md:flex-row">
+            <div className="relative flex w-full flex-col overflow-hidden rounded-2xl border border-black/10 bg-[#F6F6F6] shadow-xl md:flex-row">
               {/* Left Column: Portrait Photo */}
-              <div className="relative aspect-[3/4] w-full overflow-hidden bg-neutral-200 md:aspect-auto md:w-[36%] md:min-h-[460px]">
+              <div className="relative aspect-[16/10] sm:aspect-[4/3] w-full max-h-[260px] sm:max-h-[340px] overflow-hidden bg-neutral-200 md:aspect-auto md:max-h-none md:w-[36%] md:min-h-[460px]">
                 {selectedMember.photo ? (
                   <img
                     src={selectedMember.photo}
@@ -252,21 +254,21 @@ export default function TeamSection({ division = "studio" }) {
               </div>
 
               {/* Right Column: Bio, Socials, Header & Navigation */}
-              <div className="flex flex-1 flex-col justify-between p-6 sm:p-8 md:p-10">
+              <div className="flex flex-1 flex-col justify-between p-4 sm:p-8 md:p-10">
                 {/* Header Row: Social Icons (Left) + "Hi, I'm {Name}" (Right) */}
                 <div>
-                  <div className="flex items-center justify-between gap-4">
+                  <div className="flex items-center justify-between gap-3 sm:gap-4">
                     {/* Social Media Icons */}
-                    <div className="flex items-center gap-2.5 sm:gap-3">
+                    <div className="flex items-center gap-2 sm:gap-2.5">
                       {/* Instagram */}
                       <a
                         href={selectedMember.socials?.instagram || "https://instagram.com"}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-tr from-[#f09433] via-[#dc2743] to-[#bc1888] text-white shadow-sm transition-transform duration-200 hover:scale-110 active:scale-95"
+                        className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-tr from-[#f09433] via-[#dc2743] to-[#bc1888] text-white shadow-sm transition-transform duration-200 hover:scale-110 active:scale-95 sm:h-9 sm:w-9"
                         aria-label={`${selectedMember.name} on Instagram`}
                       >
-                        <svg className="h-5 w-5 fill-current" viewBox="0 0 24 24">
+                        <svg className="h-4 w-4 fill-current sm:h-5 sm:w-5" viewBox="0 0 24 24">
                           <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
                         </svg>
                       </a>
@@ -276,10 +278,10 @@ export default function TeamSection({ division = "studio" }) {
                         href={selectedMember.socials?.tiktok || "https://tiktok.com"}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex h-9 w-9 items-center justify-center rounded-full bg-black text-white shadow-sm transition-transform duration-200 hover:scale-110 active:scale-95"
+                        className="flex h-8 w-8 items-center justify-center rounded-full bg-black text-white shadow-sm transition-transform duration-200 hover:scale-110 active:scale-95 sm:h-9 sm:w-9"
                         aria-label={`${selectedMember.name} on TikTok`}
                       >
-                        <svg className="h-4.5 w-4.5 fill-current" viewBox="0 0 24 24">
+                        <svg className="h-4 w-4 fill-current sm:h-4.5 sm:w-4.5" viewBox="0 0 24 24">
                           <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64c.298-.002.595.042.88.13V9.4a6.33 6.33 0 0 0-1-.08A6.34 6.34 0 0 0 3 15.66a6.34 6.34 0 0 0 10.82 4.47V10.89a8.28 8.28 0 0 0 5.77 2.29V9.74a4.84 4.84 0 0 1-3.77-3.05z" />
                         </svg>
                       </a>
@@ -289,10 +291,10 @@ export default function TeamSection({ division = "studio" }) {
                         href={selectedMember.socials?.facebook || "https://facebook.com"}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex h-9 w-9 items-center justify-center rounded-full bg-[#1877F2] text-white shadow-sm transition-transform duration-200 hover:scale-110 active:scale-95"
+                        className="flex h-8 w-8 items-center justify-center rounded-full bg-[#1877F2] text-white shadow-sm transition-transform duration-200 hover:scale-110 active:scale-95 sm:h-9 sm:w-9"
                         aria-label={`${selectedMember.name} on Facebook`}
                       >
-                        <svg className="h-4.5 w-4.5 fill-current" viewBox="0 0 24 24">
+                        <svg className="h-4 w-4 fill-current sm:h-4.5 sm:w-4.5" viewBox="0 0 24 24">
                           <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
                         </svg>
                       </a>
@@ -300,35 +302,35 @@ export default function TeamSection({ division = "studio" }) {
 
                     {/* Right: "Hi, I'm" / "John Doe" Headline */}
                     <div className="text-right">
-                      <span className="block font-serif text-2xl font-light text-neutral-800 sm:text-3xl">
+                      <span className="block font-serif text-lg font-light text-neutral-800 sm:text-2xl md:text-3xl">
                         Hi, I'm
                       </span>
-                      <h3 className="block font-serif text-3xl font-normal tracking-tight text-neutral-950 sm:text-4xl md:text-5xl">
+                      <h3 className="block font-serif text-2xl font-normal tracking-tight text-neutral-950 sm:text-4xl md:text-5xl">
                         {selectedMember.name}
                       </h3>
                     </div>
                   </div>
 
                   {/* Horizontal dividing line */}
-                  <div className="my-5 h-px w-full bg-neutral-300" aria-hidden="true" />
+                  <div className="my-3 sm:my-5 h-px w-full bg-neutral-300" aria-hidden="true" />
                 </div>
 
                 {/* Middle: Bio Paragraph */}
-                <div className="my-4">
+                <div className="my-2 sm:my-4">
                   <p className="max-w-xl text-xs leading-relaxed text-neutral-600 sm:text-sm md:text-[15px]">
                     {selectedMember.bio}
                   </p>
                 </div>
 
                 {/* Bottom Row: Featured Projects (Left) + Navigation Buttons (Right) */}
-                <div className="mt-4 flex items-end justify-between gap-4 pt-2">
+                <div className="mt-3 flex items-end justify-between gap-3 pt-2 sm:mt-4 sm:gap-4">
                   {/* Two Project Thumbnails Side by Side */}
-                  <div className="flex flex-wrap items-center gap-3 sm:gap-4">
+                  <div className="flex items-center gap-2 sm:gap-3 md:gap-4">
                     {selectedMember.works && selectedMember.works.length > 0 ? (
                       selectedMember.works.slice(0, 2).map((img, idx) => (
                         <div
                           key={idx}
-                          className="aspect-[16/10] w-32 overflow-hidden rounded-lg bg-neutral-900 shadow-md transition-transform duration-300 hover:scale-105 sm:w-40 md:w-44"
+                          className="aspect-[16/10] w-24 overflow-hidden rounded-md bg-neutral-900 shadow-md transition-transform duration-300 hover:scale-105 sm:w-36 md:w-44 sm:rounded-lg"
                         >
                           <img
                             src={img}
@@ -338,7 +340,7 @@ export default function TeamSection({ division = "studio" }) {
                         </div>
                       ))
                     ) : (
-                      <div className="aspect-[16/10] w-32 overflow-hidden rounded-lg bg-neutral-900 shadow-md sm:w-40 md:w-44">
+                      <div className="aspect-[16/10] w-24 overflow-hidden rounded-md bg-neutral-900 shadow-md sm:w-36 md:w-44 sm:rounded-lg">
                         <img
                           src="/project-bg.png"
                           alt="Project work preview"
@@ -349,17 +351,17 @@ export default function TeamSection({ division = "studio" }) {
                   </div>
 
                   {/* Three Circular Action Buttons Stacked Vertically */}
-                  <div className="flex flex-col items-center gap-2.5 sm:gap-3">
+                  <div className="flex flex-col items-center gap-2 sm:gap-2.5">
                     {/* Top: Next Talent (Curved Arrow Right) */}
                     <button
                       type="button"
                       onClick={goToNext}
                       aria-label="Next talent"
                       title="Next talent"
-                      className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border-2 border-black/80 bg-white text-black shadow-sm transition-all duration-200 hover:scale-110 hover:border-black hover:bg-neutral-100 hover:shadow-md active:scale-95 sm:h-11 sm:w-11"
+                      className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border-2 border-black/80 bg-white text-black shadow-sm transition-all duration-200 hover:scale-110 hover:border-black hover:bg-neutral-100 hover:shadow-md active:scale-95 sm:h-10 sm:w-10"
                     >
                       <svg
-                        className="h-5 w-5 fill-none stroke-current"
+                        className="h-4 w-4 fill-none stroke-current sm:h-5 sm:w-5"
                         viewBox="0 0 24 24"
                         strokeWidth="2.2"
                         strokeLinecap="round"
@@ -376,10 +378,10 @@ export default function TeamSection({ division = "studio" }) {
                       onClick={goToPrev}
                       aria-label="Previous talent"
                       title="Previous talent"
-                      className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border-2 border-black/80 bg-white text-black shadow-sm transition-all duration-200 hover:scale-110 hover:border-black hover:bg-neutral-100 hover:shadow-md active:scale-95 sm:h-11 sm:w-11"
+                      className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border-2 border-black/80 bg-white text-black shadow-sm transition-all duration-200 hover:scale-110 hover:border-black hover:bg-neutral-100 hover:shadow-md active:scale-95 sm:h-10 sm:w-10"
                     >
                       <svg
-                        className="h-5 w-5 fill-none stroke-current"
+                        className="h-4 w-4 fill-none stroke-current sm:h-5 sm:w-5"
                         viewBox="0 0 24 24"
                         strokeWidth="2.2"
                         strokeLinecap="round"
@@ -396,9 +398,9 @@ export default function TeamSection({ division = "studio" }) {
                       onClick={() => setSelectedId(null)}
                       aria-label="Back to talent list"
                       title="Back to talent list"
-                      className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border-2 border-black/80 bg-white text-black shadow-sm transition-all duration-200 hover:scale-110 hover:border-black hover:bg-neutral-100 hover:shadow-md active:scale-95 sm:h-11 sm:w-11"
+                      className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border-2 border-black/80 bg-white text-black shadow-sm transition-all duration-200 hover:scale-110 hover:border-black hover:bg-neutral-100 hover:shadow-md active:scale-95 sm:h-10 sm:w-10"
                     >
-                      <svg className="h-5 w-5 fill-black" viewBox="0 0 24 24">
+                      <svg className="h-4 w-4 fill-black sm:h-5 sm:w-5" viewBox="0 0 24 24">
                         <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
                       </svg>
                     </button>
