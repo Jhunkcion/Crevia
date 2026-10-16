@@ -87,12 +87,11 @@ export default function Work() {
 
   // Prevent background scroll when modal is open
   useEffect(() => {
-    if (selectedProject) {
-      document.body.style.overflow = "hidden";
-      return () => {
-        document.body.style.overflow = "";
-      };
-    }
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = selectedProject ? "hidden" : previousOverflow;
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
   }, [selectedProject]);
 
   return (
@@ -112,7 +111,16 @@ export default function Work() {
             {/* Hover overlay: only the button shows up */}
             <div
               className="gridinfo"
+              role="button"
+              tabIndex={0}
+              aria-label={`View ${item.title} by ${item.who}`}
               onClick={() => setSelectedProject(item)}
+              onKeyDown={(event) => {
+                if (event.key === "Enter" || event.key === " ") {
+                  event.preventDefault();
+                  setSelectedProject(item);
+                }
+              }}
             >
               <button
                 type="button"
@@ -162,6 +170,7 @@ export default function Work() {
               <img
                 src={selectedProject.image}
                 alt={selectedProject.title}
+                decoding="async"
                 className="w-full h-full object-cover object-center pointer-events-none select-none"
               />
 

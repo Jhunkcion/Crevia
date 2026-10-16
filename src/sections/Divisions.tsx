@@ -64,7 +64,6 @@ export default function Divisions({ onSelect }: DivisionsProps) {
               }`}
               onMouseEnter={() => {
                 setActiveDivision(item.id);
-                setRevealedDivision(item.id);
               }}
               onMouseLeave={() => {
                 setRevealedDivision(null);

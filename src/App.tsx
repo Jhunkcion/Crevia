@@ -31,6 +31,7 @@ function PageIndicator({ page }: { page: Section }) {
 export default function App() {
   const [activePage, setActivePage] = useState<Section>("intro");
   const [selectedDivision, setSelectedDivision] = useState<"studio" | "tech" | null>(null);
+  const [selectedTalentId, setSelectedTalentId] = useState<number | null>(null);
 
   const sectionRefs = useRef<Record<Section, HTMLElement | null>>({
     intro: null,
@@ -40,53 +41,70 @@ export default function App() {
     contact: null,
   });
 
+  const handleCloseOverlay = useCallback(() => {
+    setSelectedTalentId(null);
+    setSelectedDivision(null);
+  }, []);
+
+  const handleBack = useCallback(() => {
+    if (selectedTalentId !== null) {
+      setSelectedTalentId(null);
+    } else {
+      setSelectedDivision(null);
+    }
+  }, [selectedTalentId]);
+
   // ── Track active section via IntersectionObserver ──
   useEffect(() => {
-    const observers: IntersectionObserver[] = [];
+    const sections = Object.entries(sectionRefs.current).filter(
+      ([, element]) => element,
+    ) as [Section, HTMLElement][];
+    if (!sections.length) return;
 
-    (Object.entries(sectionRefs.current) as [Section, HTMLElement | null][]).forEach(
-      ([key, el]) => {
-        if (!el) return;
-        const observer = new IntersectionObserver(
-          ([entry]) => {
-            if (entry.isIntersecting) setActivePage(key);
-          },
-          { threshold: key === "intro" ? 0.1 : 0.4 },
-        );
-        observer.observe(el);
-        observers.push(observer);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visibleSection = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+
+        if (visibleSection) {
+          setActivePage(visibleSection.target.id as Section);
+        }
       },
+      { threshold: [0.1, 0.4, 0.75] },
     );
 
-    return () => observers.forEach((o) => o.disconnect());
+    sections.forEach(([, element]) => observer.observe(element));
+    return () => observer.disconnect();
   }, []);
 
   useEffect(() => {
     if (!selectedDivision) return;
 
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setSelectedDivision(null);
+      if (event.key === "Escape") handleBack();
     };
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [selectedDivision]);
+  }, [selectedDivision, handleBack]);
 
   useEffect(() => {
-    if (selectedDivision) {
-      document.body.style.overflow = "hidden";
-      return () => { document.body.style.overflow = ""; };
-    }
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = selectedDivision ? "hidden" : previousOverflow;
+    return () => { document.body.style.overflow = previousOverflow; };
   }, [selectedDivision]);
 
   // ── Scroll to section ──
   const handleNavigate = useCallback((page: string) => {
-    if (page !== "divisions") setSelectedDivision(null);
+    if (page !== "divisions") {
+      handleCloseOverlay();
+    }
     const el = sectionRefs.current[page as Section];
     if (el) {
       el.scrollIntoView({ behavior: "smooth" });
     }
-  }, []);
+  }, [handleCloseOverlay]);
 
   return (
     <div className="relative w-full bg-cream">
@@ -142,12 +160,12 @@ export default function App() {
       {/* ── Talent overlay (triggered from Divisions) ── */}
       {selectedDivision && (
         <div
-          className="talent-overlay fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-2 sm:p-4 md:p-6 backdrop-blur-md"
+          className="talent-overlay fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-2 sm:p-4 md:p-6 backdrop-blur-md"
           role="dialog"
           aria-modal="true"
           aria-label="Team profiles"
           onMouseDown={(event) => {
-            if (event.target === event.currentTarget) setSelectedDivision(null);
+            if (event.target === event.currentTarget) handleCloseOverlay();
           }}
         >
           <div className="talent-overlay__panel relative flex h-[92vh] w-[95vw] max-w-[1400px] flex-col overflow-hidden rounded-2xl bg-[#F6F6F6] shadow-2xl border border-black/10">
@@ -156,11 +174,11 @@ export default function App() {
               <button
                 type="button"
                 className="group inline-flex cursor-pointer items-center gap-2 rounded-full border border-black/20 bg-white px-3.5 py-1.5 text-xs font-bold uppercase tracking-wider text-black shadow-sm transition hover:bg-black hover:text-white active:scale-95 sm:px-4 sm:py-2"
-                aria-label="Close team profile"
-                onClick={() => setSelectedDivision(null)}
+                aria-label={selectedTalentId !== null ? "Back to talents list" : "Close team profile"}
+                onClick={handleBack}
               >
                 <span className="text-sm leading-none transition-transform group-hover:-translate-x-0.5">←</span>
-                <span>Back</span>
+                <span>{selectedTalentId !== null ? "Back to Talents" : "Back"}</span>
               </button>
               <div className="flex items-center gap-2 text-xs font-bold tracking-[0.2em] text-[#0E426B] uppercase">
                 <span className="hidden sm:inline">CREVIA</span>
@@ -171,7 +189,11 @@ export default function App() {
 
             {/* Scrollable Content Body */}
             <div className="flex-1 overflow-y-auto overflow-x-hidden p-3 sm:p-8 md:p-10">
-              <TeamSection division={selectedDivision || "studio"} />
+              <TeamSection
+                division={selectedDivision || "studio"}
+                selectedId={selectedTalentId}
+                onSelectId={setSelectedTalentId}
+              />
             </div>
           </div>
         </div>
