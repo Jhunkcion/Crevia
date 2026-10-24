@@ -2,7 +2,6 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 import Navbar from "./components/Navbar";
 
-import Intro from "./sections/Intro";
 import Hero from "./sections/Hero";
 import Work from "./sections/Work";
 import Contact from "./sections/Contact";
@@ -10,7 +9,7 @@ import TeamSection from "./components/TeamSection";
 import Divisions from "./sections/Divisions";
 import ScrollToTop from "./components/ScrollToTop";
 
-type Section = "intro" | "home" | "divisions" | "work" | "contact";
+type Section = "home" | "divisions" | "work" | "contact";
 
 function PageIndicator({ page }: { page: Section }) {
   return (
@@ -29,12 +28,11 @@ function PageIndicator({ page }: { page: Section }) {
 }
 
 export default function App() {
-  const [activePage, setActivePage] = useState<Section>("intro");
+  const [activePage, setActivePage] = useState<Section>("home");
   const [selectedDivision, setSelectedDivision] = useState<"studio" | "tech" | null>(null);
   const [selectedTalentId, setSelectedTalentId] = useState<number | null>(null);
 
   const sectionRefs = useRef<Record<Section, HTMLElement | null>>({
-    intro: null,
     home: null,
     divisions: null,
     work: null,
@@ -116,15 +114,7 @@ export default function App() {
 
       <PageIndicator page={activePage} />
 
-      {/* ── Intro ── */}
-      <section
-        ref={(el) => { sectionRefs.current.intro = el; }}
-        id="intro"
-      >
-        <Intro />
-      </section>
-
-      {/* ── Hero ── */}
+      {/* ── Hero (with video background) ── */}
       <section
         ref={(el) => { sectionRefs.current.home = el; }}
         id="home"
