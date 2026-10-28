@@ -116,6 +116,7 @@ export default function App() {
       <section
         ref={(el) => { sectionRefs.current.work = el; }}
         id="work"
+        className="w-full bg-cream"
       >
         <Work />
       </section>
@@ -124,7 +125,7 @@ export default function App() {
       <section
         ref={(el) => { sectionRefs.current.contact = el; }}
         id="contact"
-        className="w-full bg-[#DFEFFB]"
+        className="w-full bg-cream"
       >
         <Contact />
       </section>

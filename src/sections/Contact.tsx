@@ -58,7 +58,7 @@ export default function Contact() {
   };
 
   return (
-    <div className="relative flex min-h-screen w-full items-center justify-center bg-[#DFEFFB] px-6 py-24 sm:px-10 md:py-28 lg:px-16 xl:px-24">
+    <div className="relative flex min-h-screen w-full items-center justify-center bg-cream px-6 py-24 sm:px-10 md:py-28 lg:px-16 xl:px-24">
       <div className="mx-auto flex w-full max-w-6xl flex-col items-center justify-between gap-12 lg:flex-row lg:items-start lg:gap-16 xl:gap-24">
         {/* Left Column: Headline + Social Media Boxes */}
         <div className="flex w-full flex-col items-start lg:w-1/2 lg:pt-2">

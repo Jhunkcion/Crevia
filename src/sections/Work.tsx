@@ -89,7 +89,7 @@ export default function Work() {
   }, [selectedProject]);
 
   return (
-    <section id="work" className="relative w-full">
+    <section id="work" className="relative w-full bg-cream">
       <div className="gridywrap">
         {PROJECTS.map((item) => (
           <div
