@@ -74,7 +74,7 @@ export default function Contact() {
           <div className="mt-7 flex w-full max-w-[274px] flex-col gap-2.5 sm:mt-9">
             {/* Instagram */}
             <a
-              href="https://instagram.com/Crevia"
+              href="https://www.instagram.com/crevia.std/"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Instagram @Crevia"
@@ -86,10 +86,10 @@ export default function Contact() {
 
             {/* TikTok */}
             <a
-              href="https://tiktok.com/@Crevia"
+              href="https://www.youtube.com/@Crevia-std"
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="TikTok @Crevia"
+              aria-label="YouTube @Crevia"
               className="flex h-10 w-full items-center gap-3 bg-[#D9D9D9] px-4 text-black transition-all duration-150 hover:bg-[#cecece] active:scale-[0.99]"
             >
               <TikTokIcon className="h-5 w-5 flex-shrink-0 text-black" />
@@ -100,14 +100,14 @@ export default function Contact() {
 
         {/* Right Column: RSVP / Emailing Big Box */}
         <div className="flex w-full justify-center lg:w-1/2 lg:justify-end">
-          <div className="relative flex min-h-[462px] w-full max-w-[420px] flex-col justify-between bg-[#D9D9D9] p-6 sm:p-8 md:p-9 lg:w-[380px] xl:w-[420px]">
+          <div className="relative flex min-h-[462px] w-full max-w-[420px] flex-col justify-between bg-[#0E426B] p-6 sm:p-8 md:p-9 lg:w-[380px] xl:w-[420px]">
             <form onSubmit={handleMailto} className="flex flex-1 flex-col justify-between">
               <div>
-                <div className="mb-5 flex items-center justify-between border-b border-black/10 pb-3">
-                  <span className="text-xs font-bold tracking-[0.2em] text-black uppercase">
+                <div className="mb-5 flex items-center justify-between border-b border-white/20 pb-3">
+                  <span className="text-xs font-bold tracking-[0.2em] text-white uppercase">
                     RSVP / INQUIRIES
                   </span>
-                  <span className="text-[10px] font-semibold tracking-wider text-black/50">
+                  <span className="text-[10px] font-semibold tracking-wider text-[#65bafa]">
                     CREVIA
                   </span>
                 </div>
@@ -116,7 +116,7 @@ export default function Contact() {
                 <div className="mb-4">
                   <label
                     htmlFor="rsvp-email"
-                    className="mb-1.5 block text-xs font-bold tracking-wider text-black uppercase"
+                    className="mb-1.5 block text-xs font-bold tracking-wider text-white uppercase"
                   >
                     Email
                   </label>
@@ -135,7 +135,7 @@ export default function Contact() {
                 <div className="mb-4">
                   <label
                     htmlFor="rsvp-notes"
-                    className="mb-1.5 block text-xs font-bold tracking-wider text-black uppercase"
+                    className="mb-1.5 block text-xs font-bold tracking-wider text-white uppercase"
                   >
                     Notes
                   </label>
@@ -161,15 +161,15 @@ export default function Contact() {
                 </button>
 
                 {submitted ? (
-                  <p className="mt-2 text-center text-xs font-medium text-emerald-800">
-                    Opening mail client to hello@crevia.com...
+                  <p className="mt-2 text-center text-xs font-medium text-emerald-300">
+                    Opening mail client to Crevia... Please check your email client to send the message.
                   </p>
                 ) : (
-                  <p className="mt-2 text-center text-[11px] text-neutral-600">
+                  <p className="mt-2 text-center text-[11px] text-white/75">
                     Opens mail client to{" "}
                     <a
-                      href="mailto:hello@crevia.com"
-                      className="font-semibold text-black hover:underline"
+                      href="mailto:creviagency@gmail.com"
+                      className="font-semibold text-[#65bafa] hover:underline"
                     >
                       hello@crevia.com
                     </a>

@@ -15,7 +15,7 @@ export default function Hero({ onNavigate }: HeroProps) {
       />
 
       {/* ── Dark overlay for readability ── */}
-      <div className="absolute inset-0 bg-black/45" aria-hidden="true" />
+      <div className="absolute inset-0 bg-black/65" aria-hidden="true" />
 
       {/* ── Content ── */}
       <div className="relative z-10 flex h-full flex-col items-center justify-center px-6 text-center text-white">
@@ -24,13 +24,13 @@ export default function Hero({ onNavigate }: HeroProps) {
           <img
             src="/Logo Crevia.png"
             alt="Crevia logo"
-            className="mb-6 h-auto w-[min(40vw,12rem)] object-contain sm:w-[min(30vw,14rem)] md:mb-8"
+            className="mb-6 h-auto w-[min(40vw,12rem)] object-contain sm:w-[min(30vw,14rem)] md:mb-8 drop-shadow-xl"
             width="224"
             height="224"
             decoding="async"
           />
 
-          <h1 className="mb-6 text-6xl font-bold leading-tight tracking-tight md:text-7xl lg:text-8xl">
+          <h1 className="mb-6 text-6xl font-bold leading-tight tracking-tight md:text-7xl lg:text-8xl drop-shadow-md">
             CREVIA
           </h1>
           <p className="mb-4 text-sm font-medium tracking-[.2em] text-white/70 md:text-base">

@@ -139,7 +139,7 @@ export default function Divisions({ onSelect }: DivisionsProps) {
                       e.stopPropagation();
                       selectDivision(item.id);
                     }}
-                    className="group/btn relative inline-flex cursor-pointer items-center gap-1.5 sm:gap-2.5 rounded-md sm:rounded-lg bg-[#FFFBF0] px-2.5 py-1.5 sm:px-4 sm:py-2 text-[9px] sm:text-xs font-bold uppercase tracking-wider text-[#0E426B] shadow-md transition-all duration-300 hover:scale-105 hover:bg-white hover:text-[#002B66] hover:shadow-xl active:scale-95 focus-visible:ring-2 focus-visible:ring-white"
+                    className="group/btn relative inline-flex cursor-pointer items-center gap-1.5 sm:gap-2.5 rounded-md sm:rounded-lg bg-cream px-2.5 py-1.5 sm:px-4 sm:py-2 text-[9px] sm:text-xs font-bold uppercase tracking-wider text-[#0E426B] shadow-md transition-all duration-300 hover:scale-105 hover:bg-white hover:text-[#002B66] hover:shadow-xl active:scale-95 focus-visible:ring-2 focus-visible:ring-white"
                     aria-label={`Open ${item.title} talents`}
                   >
                     <span>Talents</span>

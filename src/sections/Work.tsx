@@ -5,7 +5,6 @@ interface ProjectItem {
   id: number;
   className: string;
   title: string;
-  time: string;
   who: string;
   image: string;
   excerpt?: string;
@@ -16,7 +15,7 @@ const PROJECTS: ProjectItem[] = [
     id: 1,
     className: "gridy-2 gridyhe-1",
     title: "Item Title",
-    time: "17:22 17th Feb 2015",
+
     who: "Bruce Wayne",
     image: "/project-bg.png",
     excerpt: "Lorem ipsum dolor set amet, some dummy content..",
@@ -25,7 +24,6 @@ const PROJECTS: ProjectItem[] = [
     id: 2,
     className: "gridy-1 gridyhe-1",
     title: "Item Title",
-    time: "17:22 17th Feb 2015",
     who: "Harvey Dent",
     image: "/project-bg.png",
     excerpt: "Lorem ipsum dolor set amet, some dummy content..",
@@ -34,7 +32,6 @@ const PROJECTS: ProjectItem[] = [
     id: 3,
     className: "gridy-1 gridyhe-2",
     title: "Item Title",
-    time: "17:22 17th Feb 2015",
     who: "Clark Kent",
     image: "/project-bg.png",
     excerpt: "Lorem ipsum dolor set amet, some dummy content..",
@@ -43,7 +40,6 @@ const PROJECTS: ProjectItem[] = [
     id: 4,
     className: "gridy-2 gridyhe-1",
     title: "Item Title",
-    time: "17:22 17th Feb 2015",
     who: "Tony Stark",
     image: "/project-bg.png",
     excerpt: "Lorem ipsum dolor set amet, some dummy content..",
@@ -52,7 +48,6 @@ const PROJECTS: ProjectItem[] = [
     id: 5,
     className: "gridy-1 gridyhe-1",
     title: "Item Title",
-    time: "17:22 17th Feb 2015",
     who: "Steve Rogers",
     image: "/project-bg.png",
     excerpt: "Lorem ipsum dolor set amet, some dummy content..",
@@ -61,7 +56,6 @@ const PROJECTS: ProjectItem[] = [
     id: 6,
     className: "gridy-1 gridyhe-1",
     title: "Item Title",
-    time: "17:22 17th Feb 2015",
     who: "Natasha Romanoff",
     image: "/project-bg.png",
     excerpt: "Lorem ipsum dolor set amet, some dummy content..",
@@ -195,15 +189,17 @@ export default function Work() {
                     {selectedProject.title}
                   </h2>
                   <div className="mt-2.5 sm:mt-3 flex flex-wrap items-center gap-3 sm:gap-4 text-xs sm:text-sm text-white/85">
-                    <span className="inline-flex items-center gap-1.5 font-light">
-                      <i className="fa fa-clock-o text-[#65bafa]" aria-hidden="true" />
-                      <span>{selectedProject.time}</span>
-                    </span>
-                    <span className="text-white/40" aria-hidden="true">•</span>
+
+
+
+
+
+
                     <span className="inline-flex items-center gap-1.5 font-light">
                       <i className="fa fa-user text-[#65bafa]" aria-hidden="true" />
                       <span>{selectedProject.who}</span>
                     </span>
+
                   </div>
                 </div>
               </div>

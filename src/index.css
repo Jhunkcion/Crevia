@@ -3,7 +3,7 @@
 @import "tailwindcss";
 
 @theme {
-  --color-cream: #fffbf0;
+  --color-cream: #fdfaf1;
   --color-blue: #0b3a82;
   --color-blue-dark: #073653;
   --color-ink: #071923;
@@ -124,20 +124,20 @@
 .division-card__top-line--tech { position: absolute; top: 2rem; left: 10%; width: 38%; height: .35rem; background: #65bafa; }
 .division-card__bottom-line--tech { position: absolute; right: 10%; bottom: 2rem; width: 35%; height: .35rem; background: #65bafa; }
 
-.page-indicator { position: fixed; top: 50%; left: 3.5rem; z-index: 51; display: flex; flex-direction: column; align-items: center; gap: 1.35rem; color: #65bafa; transform: translateY(-50%); pointer-events: none; }
-.page-indicator__line { width: 2px; height: 5.3rem; background: currentColor; }
-.page-indicator__line--short { height: 5.3rem; }
-.page-indicator__slashes { display: flex; flex-direction: column; gap: .55rem; }
-.page-indicator__slashes i { display: block; width: 1.2rem; height: .42rem; background: currentColor; transform: skewX(-45deg) rotate(-45deg) scaleY(2); transition: transform .45s ease, opacity .45s ease; }
-.page-indicator__dots { display: flex; flex-direction: column; gap: .55rem; font-size: 1.4rem; line-height: .45; }
-.page-indicator--home .page-indicator__slashes i:nth-child(1),
-.page-indicator--divisions .page-indicator__slashes i:nth-child(2),
-.page-indicator--work .page-indicator__slashes i:nth-child(3),
-.page-indicator--contact .page-indicator__slashes i:nth-child(4) { transform: translate(1.2rem, -.60rem) skewX(-45deg) rotate(-45deg) scaleY(2); }
-.page-indicator--home .page-indicator__slashes i:nth-child(1),
-.page-indicator--divisions .page-indicator__slashes i:nth-child(2),
-.page-indicator--work .page-indicator__slashes i:nth-child(3),
-.page-indicator--contact .page-indicator__slashes i:nth-child(4) { opacity: .25; }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /* ── Work masonry (gridywrap) ── */
 .gridywrap {
@@ -285,7 +285,7 @@
 @media (max-width: 900px) {
   .divisions-page { padding: 5.5rem 1.5rem 2.5rem; }
   .divisions-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 1.25rem !important; }
-  .page-indicator { left: 1rem; transform: translateY(-50%) scale(.7); }
+
 }
 
 @media (max-width: 640px) {
@@ -298,7 +298,7 @@
     max-width: 100% !important; 
     width: 100% !important; 
   }
-  .page-indicator { display: none; }
+
 
   .division-card { border-radius: 0.85rem; }
   .division-card__label--studio, .division-card__label--tech { 

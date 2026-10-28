@@ -11,22 +11,6 @@ import ScrollToTop from "./components/ScrollToTop";
 
 type Section = "home" | "divisions" | "work" | "contact";
 
-function PageIndicator({ page }: { page: Section }) {
-  return (
-    <aside className={`page-indicator page-indicator--${page}`} aria-label={`Current page: ${page}`}>
-      <span className="page-indicator__line" aria-hidden="true" />
-      <span className="page-indicator__slashes" aria-hidden="true">
-        <i />
-        <i />
-        <i />
-        <i />
-      </span>
-      <span className="page-indicator__line page-indicator__line--short" aria-hidden="true" />
-      <span className="page-indicator__dots" aria-hidden="true">·<br />·<br />·</span>
-    </aside>
-  );
-}
-
 export default function App() {
   const [activePage, setActivePage] = useState<Section>("home");
   const [selectedDivision, setSelectedDivision] = useState<"studio" | "tech" | null>(null);
@@ -111,8 +95,6 @@ export default function App() {
         activePage={activePage}
         onNavigate={handleNavigate}
       />
-
-      <PageIndicator page={activePage} />
 
       {/* ── Hero (with video background) ── */}
       <section
