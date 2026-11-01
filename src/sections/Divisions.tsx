@@ -70,7 +70,7 @@ export default function Divisions({ onSelect }: DivisionsProps) {
               }}
               onClick={() => toggleReveal(item.id)}
             >
-              {/* ── Default Unhovered State ── */}
+              {/* ── Default Unhovered State (Cover with Video Background) ── */}
               <div
                 className={`absolute inset-0 flex flex-col justify-end p-3 sm:p-6 md:p-8 text-[#f7fbff] transition-all duration-500 ease-out ${
                   isStudio ? "items-end text-right" : "items-start text-left"
@@ -80,29 +80,39 @@ export default function Divisions({ onSelect }: DivisionsProps) {
                     : "opacity-100"
                 }`}
               >
-                <span
-                  className={`division-card__top-line division-card__top-line--${item.id}`}
-                  aria-hidden="true"
-                />
-                <span
-                  className={`division-card__bottom-line division-card__bottom-line--${item.id}`}
+                {/* Background Video */}
+                <video
+                  className="absolute inset-0 h-full w-full object-cover opacity-50 pointer-events-none select-none"
+                  src={isStudio ? "/studio-bg.mp4" : "/tech-bg.mp4"}
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
                   aria-hidden="true"
                 />
 
-                <span
-                  className={`division-card__label division-card__label--${item.id}`}
+                {/* Overlay for optimal text readability */}
+                <div
+                  className="absolute inset-0 bg-[#0E426B]/20 pointer-events-none select-none"
+                  aria-hidden="true"
+                />
+
+                {/* Title and line directly below it */}
+                <div
+                  className={`division-card__label-group division-card__label-group--${item.id} relative z-10 flex flex-col ${
+                    isStudio ? "items-start text-left" : "items-end text-right"
+                  }`}
                 >
-                  {item.title}
-                </span>
-
-                <span
-                  className={`division-card__label-line division-card__label-line--${item.id}`}
-                  aria-hidden="true"
-                />
-
-                <span className="absolute bottom-2 sm:bottom-4 left-1/2 -translate-x-1/2 text-[8px] sm:text-[10px] font-semibold tracking-[0.16em] text-[#65bafa]/70 uppercase transition-opacity duration-300 group-hover:opacity-0">
-                  Tap / Hover
-                </span>
+                  <span
+                    className={`division-card__label division-card__label--${item.id} font-serif tracking-tight drop-shadow-lg`}
+                  >
+                    {item.title}
+                  </span>
+                  <span
+                    className={`division-card__label-line division-card__label-line--${item.id}`}
+                    aria-hidden="true"
+                  />
+                </div>
               </div>
 
               {/* ── Hovered / Revealed State (Mockup Design) ── */}
@@ -115,7 +125,7 @@ export default function Divisions({ onSelect }: DivisionsProps) {
               >
                 {/* Top Rounded Light Blue Box with Division Name */}
                 <div className="flex h-[38%] sm:h-[42%] w-full select-none items-center justify-center rounded-lg sm:rounded-2xl bg-[#B9D9FF] px-2 sm:px-4 shadow-inner">
-                  <h3 className="text-sm font-semibold tracking-tight text-[#0E426B] sm:text-2xl md:text-3xl lg:text-4xl">
+                  <h3 className="font-serif text-sm font-light tracking-tight text-[#0E426B] sm:text-2xl md:text-3xl lg:text-4xl">
                     {item.title}
                   </h3>
                 </div>

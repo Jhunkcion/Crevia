@@ -126,7 +126,6 @@ export default function Work() {
                 aria-label={`Focus on ${item.title} by ${item.who}`}
               >
                 <span>View</span>
-                <i className="fa fa-plus" aria-hidden="true" />
               </button>
             </div>
           </div>
