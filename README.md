@@ -2,6 +2,10 @@
 
 React + TypeScript foundation for CREVIA company website.
 
+## Live demo
+
+[Open CREVIA website](https://crevia-alpha.vercel.app/#)
+
 ## Tech stack
 
 - React 19
