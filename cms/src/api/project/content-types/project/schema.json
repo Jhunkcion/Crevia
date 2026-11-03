@@ -1,0 +1,44 @@
+{
+  "kind": "collectionType",
+  "collectionName": "projects",
+  "info": {
+    "singularName": "project",
+    "pluralName": "projects",
+    "displayName": "Project",
+    "description": "Projects displayed in the Work portfolio section"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "client": {
+      "type": "string"
+    },
+    "excerpt": {
+      "type": "text"
+    },
+    "layoutClass": {
+      "type": "enumeration",
+      "enum": [
+        "standard_1x1",
+        "wide_2x1",
+        "tall_1x2",
+        "large_2x2",
+        "full_width_3x1"
+      ],
+      "default": "standard_1x1"
+    },
+    "image": {
+      "type": "string"
+    },
+    "order": {
+      "type": "integer",
+      "default": 0
+    }
+  }
+}

@@ -1,5 +1,6 @@
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useEffect, useState } from "react";
+import { fetchTeamMembers } from "../lib/strapi";
 
 const studioMembers = [
   {
@@ -149,7 +150,25 @@ export default function TeamSection({
   const [selectedWork, setSelectedWork] = useState(null);
   const reduceMotion = useReducedMotion();
 
-  const teamMembers = division === "tech" ? techMembers : studioMembers;
+  const [members, setMembers] = useState({ studio: studioMembers, tech: techMembers });
+
+  useEffect(() => {
+    let isMounted = true;
+    fetchTeamMembers().then((data) => {
+      if (!isMounted || !data || data.length === 0) return;
+      const studio = data.filter((m) => m.division === "studio");
+      const tech = data.filter((m) => m.division === "tech");
+      setMembers({
+        studio: studio.length > 0 ? studio : studioMembers,
+        tech: tech.length > 0 ? tech : techMembers,
+      });
+    });
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const teamMembers = division === "tech" ? members.tech : members.studio;
   const selectedIndex = teamMembers.findIndex((m) => m.id === selectedId);
   const selectedMember = selectedIndex !== -1 ? teamMembers[selectedIndex] : null;
 
