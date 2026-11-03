@@ -12,34 +12,41 @@ interface ProjectItem {
   order?: number;
 }
 
-// Easy-to-read layout classes for the 6-slot mosaic:
-// standard_1x1 (1x1 normal), wide_2x1 (2x1 wide landscape), tall_1x2 (1x2 tall portrait)
-// Mathematically fills a 3x3 grid with ZERO empty blanks:
+// 6-slot mosaic layout classes that mathematically fill a 3x3 grid with ZERO empty blanks:
+// Includes both legacy gridy-* classes and modern human-readable aliases
 // Row 1: wide_2x1 (2 cols) + standard_1x1 (1 col) = 3 cols
 // Row 2: tall_1x2 (1 col, 2 rows) + wide_2x1 (2 cols) = 3 cols
 // Row 3: tall_1x2 (continued) + standard_1x1 (1 col) + standard_1x1 (1 col) = 3 cols
 const MOSAIC_SLOTS = [
-  "wide_2x1",     // Slot 0: 2 Kolom x 1 Baris (Wide Landscape)
-  "standard_1x1", // Slot 1: 1 Kolom x 1 Baris (Square)
-  "tall_1x2",     // Slot 2: 1 Kolom x 2 Baris (Tall Portrait)
-  "wide_2x1",     // Slot 3: 2 Kolom x 1 Baris (Wide Landscape)
-  "standard_1x1", // Slot 4: 1 Kolom x 1 Baris (Square)
-  "standard_1x1", // Slot 5: 1 Kolom x 1 Baris (Square)
+  "gridy-2 gridyhe-1 wide_2x1",     // Slot 0: 2 Kolom x 1 Baris (Wide Landscape)
+  "gridy-1 gridyhe-1 standard_1x1", // Slot 1: 1 Kolom x 1 Baris (Square)
+  "gridy-1 gridyhe-2 tall_1x2",     // Slot 2: 1 Kolom x 2 Baris (Tall Portrait)
+  "gridy-2 gridyhe-1 wide_2x1",     // Slot 3: 2 Kolom x 1 Baris (Wide Landscape)
+  "gridy-1 gridyhe-1 standard_1x1", // Slot 4: 1 Kolom x 1 Baris (Square)
+  "gridy-1 gridyhe-1 standard_1x1", // Slot 5: 1 Kolom x 1 Baris (Square)
 ];
 
-function normalizeLayoutClass(val?: string): string {
-  if (!val) return "standard_1x1";
-  if (val.includes("wide_2x1") || val === "wide" || (val.includes("gridy-2") && !val.includes("gridyhe-2"))) return "wide_2x1";
-  if (val.includes("tall_1x2") || val === "tall" || val.includes("gridyhe-2")) return "tall_1x2";
-  if (val.includes("large_2x2") || val === "large" || (val.includes("gridy-2") && val.includes("gridyhe-2"))) return "large_2x2";
-  if (val.includes("full_width_3x1") || val === "full" || val.includes("gridy-3")) return "full_width_3x1";
-  return "standard_1x1";
+function toGridClasses(val?: string, slotIndex?: number): string {
+  const target = val || (slotIndex !== undefined ? MOSAIC_SLOTS[slotIndex % MOSAIC_SLOTS.length] : "standard_1x1");
+  if (target.includes("wide_2x1") || (target.includes("gridy-2") && !target.includes("gridyhe-2"))) {
+    return "gridy-2 gridyhe-1 wide_2x1";
+  }
+  if (target.includes("tall_1x2") || target.includes("gridyhe-2")) {
+    return "gridy-1 gridyhe-2 tall_1x2";
+  }
+  if (target.includes("large_2x2") || (target.includes("gridy-2") && target.includes("gridyhe-2"))) {
+    return "gridy-2 gridyhe-2 large_2x2";
+  }
+  if (target.includes("full_width_3x1") || target.includes("gridy-3")) {
+    return "gridy-3 gridyhe-1 full_width_3x1";
+  }
+  return "gridy-1 gridyhe-1 standard_1x1";
 }
 
 const DEFAULT_PROJECTS: ProjectItem[] = [
   {
     id: 1,
-    className: "wide_2x1",
+    className: "gridy-2 gridyhe-1 wide_2x1",
     title: "Brand Identity",
     who: "North Studio",
     image: "/project-bg.png",
@@ -48,7 +55,7 @@ const DEFAULT_PROJECTS: ProjectItem[] = [
   },
   {
     id: 2,
-    className: "standard_1x1",
+    className: "gridy-1 gridyhe-1 standard_1x1",
     title: "Campaign Launch",
     who: "Aster Labs",
     image: "/project-bg.png",
@@ -57,7 +64,7 @@ const DEFAULT_PROJECTS: ProjectItem[] = [
   },
   {
     id: 3,
-    className: "tall_1x2",
+    className: "gridy-1 gridyhe-2 tall_1x2",
     title: "Web Experience",
     who: "Sora Creative",
     image: "/project-bg.png",
@@ -66,7 +73,7 @@ const DEFAULT_PROJECTS: ProjectItem[] = [
   },
   {
     id: 4,
-    className: "wide_2x1",
+    className: "gridy-2 gridyhe-1 wide_2x1",
     title: "Product Story",
     who: "Morrow & Co.",
     image: "/project-bg.png",
@@ -75,7 +82,7 @@ const DEFAULT_PROJECTS: ProjectItem[] = [
   },
   {
     id: 5,
-    className: "standard_1x1",
+    className: "gridy-1 gridyhe-1 standard_1x1",
     title: "Launch System",
     who: "Fieldhouse",
     image: "/project-bg.png",
@@ -84,7 +91,7 @@ const DEFAULT_PROJECTS: ProjectItem[] = [
   },
   {
     id: 6,
-    className: "standard_1x1",
+    className: "gridy-1 gridyhe-1 standard_1x1",
     title: "Visual Direction",
     who: "Luma Collective",
     image: "/project-bg.png",
@@ -96,8 +103,14 @@ const DEFAULT_PROJECTS: ProjectItem[] = [
 export default function Work() {
   const [projects, setProjects] = useState<ProjectItem[]>(DEFAULT_PROJECTS);
   const [selectedProject, setSelectedProject] = useState<ProjectItem | null>(null);
+  const [isPortrait, setIsPortrait] = useState<boolean>(false);
   const [isGalleryOpen, setIsGalleryOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+
+  const handleOpenProject = (item: ProjectItem) => {
+    setIsPortrait(Boolean(item.className && item.className.includes("tall_1x2")));
+    setSelectedProject(item);
+  };
 
   useEffect(() => {
     let isMounted = true;
@@ -111,7 +124,7 @@ export default function Work() {
           image: p.image || "/project-bg.png",
           excerpt: p.excerpt || "",
           order: typeof p.order === "number" ? p.order : 0,
-          className: normalizeLayoutClass(p.layoutClass),
+          className: p.layoutClass ? toGridClasses(p.layoutClass) : "",
         }))
       );
     });
@@ -150,27 +163,74 @@ export default function Work() {
   }, [selectedProject, isGalleryOpen]);
 
   // Featured projects for Homepage mosaic:
-  // Preserves the 6 curated showcase slots in exact size & scale so there is NEVER a blank area.
+  // Dynamically assigns projects to 6 mosaic slots that perfectly tessellate a 3x3 grid without any blank spaces.
+  // Respects user-configured layout sizes (tall_1x2, wide_2x1, standard_1x1) from Strapi CMS.
   const featuredProjects = useMemo(() => {
-    // 1. Prioritize projects with order > 0 (curated showcase order 1..6)
-    const curated = projects
-      .filter((p) => typeof p.order === "number" && p.order > 0)
-      .sort((a, b) => (a.order || 0) - (b.order || 0));
-
-    // If curated has 6 items, use them; otherwise use available projects or fallback to DEFAULT_PROJECTS
-    let pool = curated.length >= 6 ? curated : (projects.length >= 6 ? projects : DEFAULT_PROJECTS);
-    const selected = pool.slice(0, 6);
-
-    // Fill up to 6 if needed
-    while (selected.length < 6 && DEFAULT_PROJECTS[selected.length]) {
-      selected.push(DEFAULT_PROJECTS[selected.length]);
+    const pool = projects.length > 0 ? [...projects] : [...DEFAULT_PROJECTS];
+    while (pool.length < 6 && DEFAULT_PROJECTS[pool.length]) {
+      pool.push(DEFAULT_PROJECTS[pool.length]);
     }
 
-    // Force each slot into the harmonious mosaic slot geometry
-    return selected.map((item, index) => ({
-      ...item,
-      className: MOSAIC_SLOTS[index % MOSAIC_SLOTS.length],
-    }));
+    const items = pool.slice(0, 6);
+
+    // Slot requirements for 100% gapless 3x3 layout:
+    // Slot 0: wide_2x1 (cols 1-2, row 1)
+    // Slot 1: standard_1x1 (col 3, row 1)
+    // Slot 2: tall_1x2 (col 1, rows 2-3)
+    // Slot 3: wide_2x1 (cols 2-3, row 2)
+    // Slot 4: standard_1x1 (col 2, row 3)
+    // Slot 5: standard_1x1 (col 3, row 3)
+    const slotRequirements = [
+      "wide_2x1",
+      "standard_1x1",
+      "tall_1x2",
+      "wide_2x1",
+      "standard_1x1",
+      "standard_1x1",
+    ];
+
+    const assigned: (ProjectItem | null)[] = new Array(6).fill(null);
+    const unassignedItems: ProjectItem[] = [];
+
+    // Step 1: Assign items that explicitly match their requested layout class
+    for (const item of items) {
+      const cls = item.className || "";
+      let targetType: string | null = null;
+      if (cls.includes("tall_1x2")) targetType = "tall_1x2";
+      else if (cls.includes("wide_2x1") || cls.includes("full_width_3x1")) targetType = "wide_2x1";
+      else if (cls.includes("standard_1x1")) targetType = "standard_1x1";
+
+      let placed = false;
+      if (targetType) {
+        const slotIdx = slotRequirements.findIndex(
+          (req, idx) => req === targetType && assigned[idx] === null
+        );
+        if (slotIdx !== -1) {
+          assigned[slotIdx] = {
+            ...item,
+            className: MOSAIC_SLOTS[slotIdx],
+          };
+          placed = true;
+        }
+      }
+
+      if (!placed) {
+        unassignedItems.push(item);
+      }
+    }
+
+    // Step 2: Fill remaining unfilled slots with unassigned items
+    for (let i = 0; i < 6; i++) {
+      if (assigned[i] === null) {
+        const nextItem = unassignedItems.shift() || DEFAULT_PROJECTS[i];
+        assigned[i] = {
+          ...nextItem,
+          className: MOSAIC_SLOTS[i],
+        };
+      }
+    }
+
+    return assigned as ProjectItem[];
   }, [projects]);
 
   // Filtered projects inside the Gallery modal (contains ALL projects from Strapi)
@@ -193,7 +253,7 @@ export default function Work() {
           <div
             key={item.id}
             className={`${item.className} cursor-pointer`}
-            onClick={() => setSelectedProject(item)}
+            onClick={() => handleOpenProject(item)}
           >
             <div
               className="gridimg"
@@ -206,11 +266,11 @@ export default function Work() {
               role="button"
               tabIndex={0}
               aria-label={`View ${item.title} by ${item.who}`}
-              onClick={() => setSelectedProject(item)}
+              onClick={() => handleOpenProject(item)}
               onKeyDown={(event) => {
                 if (event.key === "Enter" || event.key === " ") {
                   event.preventDefault();
-                  setSelectedProject(item);
+                  handleOpenProject(item);
                 }
               }}
             >
@@ -219,7 +279,7 @@ export default function Work() {
                 className="grid-btn grid-more"
                 onClick={(e) => {
                   e.stopPropagation();
-                  setSelectedProject(item);
+                  handleOpenProject(item);
                 }}
                 aria-label={`Focus on ${item.title} by ${item.who}`}
               >
@@ -350,7 +410,7 @@ export default function Work() {
                       {filteredProjects.map((item) => (
                         <div
                           key={item.id}
-                          onClick={() => setSelectedProject(item)}
+                          onClick={() => handleOpenProject(item)}
                           className="group relative flex flex-col overflow-hidden rounded-2xl bg-white border border-black/10 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 cursor-pointer"
                         >
                           <div className="relative aspect-[16/10] w-full overflow-hidden bg-neutral-100">
@@ -423,49 +483,63 @@ export default function Work() {
             }}
           >
             <motion.div
-              initial={{ opacity: 0, scale: 0.88, y: 20 }}
+              initial={{ opacity: 0, scale: 0.92, y: 16 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.9, y: 14 }}
-              transition={{ type: "spring", stiffness: 320, damping: 28 }}
-              className="relative w-full max-w-4xl max-h-[85vh] aspect-[4/3] sm:aspect-[16/10] overflow-hidden rounded-2xl shadow-2xl border border-white/15 bg-neutral-900 cursor-default"
+              exit={{ opacity: 0, scale: 0.94, y: 10 }}
+              transition={{ type: "spring", stiffness: 340, damping: 30 }}
+              className={`relative inline-flex flex-col items-center justify-center overflow-hidden rounded-2xl shadow-2xl border border-white/20 bg-neutral-950/95 cursor-default ${
+                isPortrait
+                  ? "w-fit max-w-[92vw] max-h-[88vh]"
+                  : "w-[92vw] max-w-4xl max-h-[85vh]"
+              }`}
               onClick={(e) => e.stopPropagation()}
             >
-              {/* Picture in the middle */}
+              {/* Picture: landscape projects match Brand Identity generous scale, while portrait displays tall and uncropped */}
               <img
                 src={selectedProject.image}
                 alt={selectedProject.title}
                 decoding="async"
-                className="w-full h-full object-cover object-center pointer-events-none select-none"
+                onLoad={(e) => {
+                  const { naturalWidth, naturalHeight } = e.currentTarget;
+                  setIsPortrait(naturalHeight > naturalWidth);
+                }}
+                className={
+                  isPortrait
+                    ? "max-h-[84vh] max-w-[90vw] min-h-[min(70vh,500px)] w-auto h-auto object-contain block pointer-events-none select-none"
+                    : "w-full max-h-[82vh] h-auto object-contain block pointer-events-none select-none"
+                }
               />
 
-              {/* Minimize button (top right) */}
+              {/* Minimize / Close button (top right) */}
               <button
                 type="button"
                 onClick={() => setSelectedProject(null)}
                 aria-label="Minimize focused picture"
                 title="Minimize"
-                className="absolute top-4 right-4 z-20 flex items-center justify-center w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-black/60 hover:bg-black/90 text-white/90 hover:text-white border border-white/25 backdrop-blur-md shadow-xl transition-all duration-200 hover:scale-110 active:scale-95 focus-visible:ring-2 focus-visible:ring-white/70 cursor-pointer"
+                className="absolute top-3.5 right-3.5 z-20 flex items-center justify-center w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-black/65 hover:bg-black/90 text-white/90 hover:text-white border border-white/25 backdrop-blur-md shadow-xl transition-all duration-200 hover:scale-110 active:scale-95 focus-visible:ring-2 focus-visible:ring-white/70 cursor-pointer"
               >
                 <i className="fa fa-compress text-base sm:text-lg" aria-hidden="true" />
               </button>
 
-              {/* Bottom-left information */}
-              <div className="absolute inset-x-0 bottom-0 z-10 pt-24 pb-6 px-6 sm:pb-8 sm:px-8 md:pb-10 md:px-10 bg-gradient-to-t from-black/90 via-black/55 to-transparent pointer-events-none">
-                <div className="max-w-2xl text-left">
+              {/* Bottom information bar */}
+              <div className="absolute inset-x-0 bottom-0 z-10 pt-20 pb-5 px-5 sm:pb-6 sm:px-8 bg-gradient-to-t from-black/95 via-black/60 to-transparent pointer-events-none">
+                <div className="max-w-xl text-left">
                   <h2
                     id="focused-picture-title"
-                    className="text-2xl sm:text-3xl md:text-4xl font-bold uppercase tracking-wide text-white drop-shadow-md"
+                    className="text-xl sm:text-2xl md:text-3xl font-bold uppercase tracking-wide text-white drop-shadow-md"
                   >
                     {selectedProject.title}
                   </h2>
-                  <div className="mt-2.5 sm:mt-3 flex flex-wrap items-center gap-3 sm:gap-4 text-xs sm:text-sm text-white/85">
-                    <span className="inline-flex items-center gap-1.5 font-light">
-                      <i className="fa fa-user text-[#65bafa]" aria-hidden="true" />
-                      <span>{selectedProject.who}</span>
-                    </span>
-                  </div>
+                  {selectedProject.who && (
+                    <div className="mt-1.5 flex flex-wrap items-center gap-3 text-xs sm:text-sm text-white/85">
+                      <span className="inline-flex items-center gap-1.5 font-light">
+                        <i className="fa fa-user text-[#65bafa]" aria-hidden="true" />
+                        <span>{selectedProject.who}</span>
+                      </span>
+                    </div>
+                  )}
                   {selectedProject.excerpt && (
-                    <p className="mt-2.5 text-xs sm:text-sm text-white/75 max-w-xl leading-relaxed">
+                    <p className="mt-2 text-xs sm:text-sm text-white/75 line-clamp-2 sm:line-clamp-3 leading-relaxed">
                       {selectedProject.excerpt}
                     </p>
                   )}
